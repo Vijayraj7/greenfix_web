@@ -88,7 +88,7 @@
                                                                    value="{{$sub_category->sub_category_id}}">
                                                         </form>
                                                         @if($sub_category->is_subscribed == 1)
-                                                            <button type="button" class="btn btn--danger subscribe-btn"
+                                                            <button type="button" class="btn btn-danger subscribe-btn"
                                                                     id="button-{{$sub_category->id}}"
                                                                     data-subcategory="{{$sub_category->id}}">
                                                                 {{translate('unsubscribe')}}
@@ -192,7 +192,7 @@
                     location.reload();
                 },
                 error: function (response) {
-                    toastr.error('{{translate('your_subscription_package_category_limit_has_ended')}}')
+                    toastr.error('server error')
                 },
                 complete: function () {
                     $('.preloader').hide()

@@ -1,5 +1,9 @@
 <?php
-$booking = \Modules\BookingModule\Entities\Booking::where('provider_id', auth()->user()->provider->id)->get();
+$booking = \Modules\BookingModule\Entities\Booking::where('provider_id', auth()->user()->provider->id)
+    ->whereDoesntHave('ignores', function ($query) {
+        $query->where('provider_id', auth()->user()->provider->id);
+    })
+    ->get();
 $maxBookingAmount = (business_config('max_booking_amount', 'booking_setup'))->live_values;
 $subscribed_sub_category_ids = \Modules\ProviderManagement\Entities\SubscribedService::where(['provider_id' => auth()->user()->provider->id])->ofSubscription(1)->pluck('sub_category_id')->toArray();
 $serviceAtProviderPlace = (int)((business_config('service_at_provider_place', 'provider_config'))->live_values ?? 0);
@@ -57,8 +61,8 @@ $logo = getBusinessSettingsImageFullPath(key: 'business_logo', settingType: 'bus
             <li class="nav-category" title="{{translate('booking_management')}}">
                 {{translate('booking_management')}}
             </li>
-            <li class="has-sub-item {{request()->is('provider/booking/*')?'sub-menu-opened':''}}">
-                <a href="#" class="{{request()->is('provider/booking/*')?'active-menu':''}}">
+            <li class="has-sub-item {{request()->is('provider/booking/*') && !request()->is('provider/booking/calendar*') ?'sub-menu-opened':''}}">
+                <a href="#" class="{{request()->is('provider/booking/*') && !request()->is('provider/booking/calendar*') ?'active-menu':''}}">
                     <span class="material-icons" title="{{translate('bookings')}}">shopping_cart</span>
                     <span class="link-title">{{translate('bookings')}}</span>
                 </a>
@@ -141,6 +145,12 @@ $logo = getBusinessSettingsImageFullPath(key: 'business_logo', settingType: 'bus
                         </a>
                     </li>
                 </ul>
+            </li>
+            <li>
+                <a href="{{ route('provider.booking.calendar.view') }}" class="{{ request()->is('provider/booking/calendar*') ?'active-menu':'' }}">
+                    <span class="material-icons" title="{{translate('chatting')}}">calendar_month</span>
+                    <span class="link-title">{{translate('Calendar View')}}
+                </a>
             </li>
 
             <li class="nav-category">{{translate('Help & support')}}</li>

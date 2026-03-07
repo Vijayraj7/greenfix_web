@@ -3631,4 +3631,5 @@ _Message' => 'Customer notification for provider bid offer
   'Are you sure to Turn Off the Page Status' => 'Are you sure to Turn Off the Page Status',
   'AI_Configuration' => 'AI Configuration',
   'Minimum variant cannot be less than one' => 'Minimum variant cannot be less than one',
+  'The topic field is required.' => 'The topic field is required.',
 );

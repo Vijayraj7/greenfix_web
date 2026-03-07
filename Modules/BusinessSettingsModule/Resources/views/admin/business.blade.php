@@ -178,6 +178,8 @@
                                             </h4>
                                             <p class="fz-12">{{ translate('For Start business input the basic info about the business like Business Name, Email, Phone number etc.') }}</p>
                                         </div>
+                                        <input type="hidden" name="web_page" value="business_information">
+
                                         <div class="card-body p-30">
                                             <div class="discount-type">
                                                 <div class="row mb-4">
@@ -2870,6 +2872,9 @@
                 type: 'POST',
                 success: function (response) {
                     toastr.success('{{translate('successfully_updated')}}');
+
+                    // refresh setup guideline UI
+                    refreshSetupGuideUI();
                 },
                 error: function (jqXHR, exception) {
                     if (jqXHR.responseJSON && jqXHR.responseJSON.errors && jqXHR.responseJSON.errors.length > 0) {

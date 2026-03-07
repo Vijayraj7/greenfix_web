@@ -28,105 +28,155 @@
                                     </div>
                                     <section>
                                             <div class="d-flex flex-column gap-1 mb-20">
-                                                <h4>{{translate('General_Information')}}</h4>
-                                                <p>{{translate('Fill an employee’s general info such as name, address number and set role')}}</p>
+                                                <h3>{{translate('General_Information')}}</h3>
+                                                <p class="fs-12">{{translate('Fill an employee’s general info such as name, address number and set role')}}</p>
                                             </div>
 
-                                            <hr class="mb-30">
-
-                                            <div class="row mb-5">
+                                            <div class="row mb-30 g-4">
                                                 <div class="col-lg-8">
-                                                    <div class="row">
-                                                        <div class="col-md-6 mb-30">
-                                                            <div class="input-wrap form-floating form-floating__icon">
-                                                                <input type="text" class="form-control" name="first_name"
-                                                                        placeholder="{{translate('First_name')}}"
-                                                                        value="{{old('first_name')}}" required>
-                                                                <label>{{translate('First_name')}}</label>
-                                                                <span class="material-icons">account_circle</span>
+                                                    <div class="bg-light rounded p-xxl-4 p-4 h-100">
+                                                        <div class="row">
+                                                            <div class="col-md-6 mb-30">
+                                                                <div class="input-wrap form-floating form-floating__icon">
+                                                                    <input type="text" class="form-control" name="first_name"
+                                                                            placeholder="{{translate('First_name')}}"
+                                                                            value="{{old('first_name')}}" required>
+                                                                    <label>{{translate('First_name')}}</label>
+                                                                    <span class="material-icons">account_circle</span>
+                                                                </div>
                                                             </div>
-                                                        </div>
-                                                        <div class="col-md-6 mb-30">
-                                                            <div class="input-wrap form-floating form-floating__icon">
-                                                                <input type="text" class="form-control" name="last_name"
-                                                                        placeholder="{{translate('Last_name')}}"
-                                                                        value="{{old('last_name')}}" required>
-                                                                <label>{{translate('Last_name')}}</label>
-                                                                <span class="material-icons">account_circle</span>
+                                                            <div class="col-md-6 mb-30">
+                                                                <div class="input-wrap form-floating form-floating__icon">
+                                                                    <input type="text" class="form-control" name="last_name"
+                                                                            placeholder="{{translate('Last_name')}}"
+                                                                            value="{{old('last_name')}}" required>
+                                                                    <label>{{translate('Last_name')}}</label>
+                                                                    <span class="material-icons">account_circle</span>
+                                                                </div>
                                                             </div>
-                                                        </div>
-                                                        <div class="col-md-6 mb-30">
-                                                            <div class="input-wrap form-floating form-floting-fix">
-                                                                <label for="phone">{{translate('Phone_number')}}</label>
-                                                                <input type="tel"
-                                                                       class="form-control"
-                                                                       name="phone"
-                                                                        placeholder="{{translate('Phone_number')}}"
-                                                                        value="{{old('phone')}}" required>
+                                                            <div class="col-md-6 mb-30">
+                                                                <div class="input-wrap form-floating form-floting-fix">
+                                                                    <label for="phone">{{translate('Phone_number')}}</label>
+                                                                    <input type="tel"
+                                                                           class="form-control"
+                                                                           name="phone"
+                                                                            placeholder="{{translate('Phone_number')}}"
+                                                                            value="{{old('phone')}}" required>
+                                                                </div>
                                                             </div>
-                                                        </div>
-                                                        <div class="col-md-6 mb-30">
-                                                            <div class="input-wrap form-floating form-floating__icon">
-                                                                <input type="text" class="form-control" id="address" name="address"
-                                                                        placeholder="{{translate('address')}}"
-                                                                        value="{{old('address')}}" required>
-                                                                <label>{{translate('Address')}}</label>
-                                                                <span class="material-icons">home</span>
+                                                            <div class="col-md-6 mb-30">
+                                                                <div class="input-wrap form-floating form-floating__icon">
+                                                                    <input type="text" class="form-control" id="address" name="address"
+                                                                            placeholder="{{translate('address')}}"
+                                                                            value="{{old('address')}}" required>
+                                                                    <label>{{translate('Address')}}</label>
+                                                                    <span class="material-icons">home</span>
+                                                                </div>
                                                             </div>
-                                                        </div>
-                                                        <div class="col-md-6 mb-30">
-                                                            <div class="input-wrap">
-                                                                <select class="select-identity theme-input-style role-btn" name="role_id" required>
-                                                                    <option selected disabled>{{translate('Select_role')}}</option>
-                                                                    @foreach($roles as $role)
-                                                                        <option value="{{$role->id}}" {{ old('role_id') == $role->id ? 'selected' : '' }}>{{$role->role_name}}</option>
-                                                                    @endforeach
-                                                                </select>
+                                                            <div class="col-md-6 mb-30">
+                                                                <div class="input-wrap">
+                                                                    <select class="select-identity theme-input-style role-btn" name="role_id" required>
+                                                                        <option selected disabled>{{translate('Select_role')}}</option>
+                                                                        @foreach($roles as $role)
+                                                                            <option value="{{$role->id}}" {{ old('role_id') == $role->id ? 'selected' : '' }}>{{$role->role_name}}</option>
+                                                                        @endforeach
+                                                                    </select>
+                                                                </div>
                                                             </div>
-                                                        </div>
-                                                        <div class="col-md-6 mb-30">
-                                                            <div class="input-wrap">
-                                                                <select class="zone-select theme-input-style"
-                                                                        name="zone_ids[]" id="zone_selector__select" multiple required>
-                                                                    <option value="all">{{translate('Select All')}}</option>
-                                                                    @foreach($zones as $zone)
-                                                                        <option value="{{$zone->id}}" {{ in_array($zone->id, old('zone_ids', [])) ? 'selected' : '' }}>{{$zone->name}}</option>
-                                                                    @endforeach
-                                                                </select>
+                                                            <div class="col-md-6 mb-30">
+                                                                <div class="input-wrap">
+                                                                    <select class="zone-select theme-input-style"
+                                                                            name="zone_ids[]" id="zone_selector__select" multiple required>
+                                                                        <option value="all">{{translate('Select All')}}</option>
+                                                                        @foreach($zones as $zone)
+                                                                            <option value="{{$zone->id}}" {{ in_array($zone->id, old('zone_ids', [])) ? 'selected' : '' }}>{{$zone->name}}</option>
+                                                                        @endforeach
+                                                                    </select>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div class="col-lg-4">
-                                                    <div class="d-flex flex-column gap-1 align-items-center">
-                                                        <div class="input-wrap">
-                                                            <div class="d-flex flex-column align-items-center gap-3">
-                                                                <div class="text-muted">{{translate('Employee Image')}} (1:1) <span class="text-danger">*</span></div>
-                                                                <div class="d-flex flex-column align-items-center">
-                                                                    <div class="upload-file">
-                                                                        <span class="upload-file__edit">
-                                                                            <span class="material-icons">edit</span>
-                                                                        </span>
-                                                                        <input type="file" id="uploadImage" class="upload-file__input"
-                                                                               name="profile_image"
-                                                                               accept=".{{ implode(',.', array_column(IMAGEEXTENSION, 'key')) }}, |image/*"
-                                                                               data-maxFileSize="{{ readableUploadMaxFileSize('image') }}"
-                                                                               required>
-                                                                        <div class="upload-file__img">
-                                                                            <img
-                                                                                src="{{asset('public/assets/admin-module')}}/img/media/upload-file.png"
-                                                                                alt="">
+                                                    <div class="bg-light rounded p-xxl-4 p-3 h-100">
+                                                        <div class="d-flex flex-column gap-1 align-items-center">
+                                                            <div class="input-wrap">
+                                                                <div class="d-flex flex-column align-items-center gap-3">
+                                                                    <div class="text-center">
+                                                                        <div class="text-dark fs-16 mb-1">{{translate('Image')}} <span class="text-danger">*</span></div>
+                                                                        <div class="text-muted fs-12">{{translate('Upload your cover Image')}}</div>
+                                                                    </div>
+                                                                    <div class="d-flex flex-column align-items-center">
+                                                                        <div class="upload-file">
+                                                                            <span class="upload-file__edit">
+                                                                                <span class="material-icons">edit</span>
+                                                                            </span>
+                                                                            <input type="file" id="uploadImage" class="upload-file__input"
+                                                                                   name="profile_image"
+                                                                                   accept=".{{ implode(',.', array_column(IMAGEEXTENSION, 'key')) }}, |image/*"
+                                                                                   data-maxFileSize="{{ readableUploadMaxFileSize('image') }}"
+                                                                                   required>
+                                                                            <div class="upload-file__img border-dashed-1-gray rounded">
+                                                                                <img
+                                                                                    src="{{asset('public/assets/admin-module')}}/img/img-upload-new-small.png"
+                                                                                    alt="">
+                                                                            </div>
                                                                         </div>
                                                                     </div>
+                                                                    <p class="opacity-75 mx-auto text-center fs-12">
+                                                                        {{ implode(', ', array_column(IMAGEEXTENSION, 'key')) }}
+                                                                        {{ translate('maximum size') }} {{ readableUploadMaxFileSize('image') }}
+                                                                        <strong class="text-dark">1:1</strong>
+                                                                    </p>
                                                                 </div>
-                                                                <p class="opacity-75 max-w220 mx-auto text-center fs-12">
-                                                                    {{ translate('Image format')}} - {{ implode(', ', array_column(IMAGEEXTENSION, 'key')) }}
-                                                                    {{ translate("Image Size") }} - {{ translate('maximum size') }} {{ readableUploadMaxFileSize('image') }}
-                                                                    {{ translate('Image Ratio') }} - 1:1
+                                                                <div class="file_error">
+    
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="d-flex flex-column gap-1 mb-20">
+                                                <h3>{{translate('Business_Information')}}</h3>
+                                                <p class="fs-12">{{translate('Give verified information to verify a employee')}}</p>
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-lg-6 mb-30">
+                                                    <div class="bg-light rounded p-xxl-4 p-3 h-100">
+                                                        <div class="input-wrap">
+                                                            <select class="select-identity theme-input-style" name="identity_type" required>
+                                                                <option value="0" disabled>{{translate('Select_Identity_Type')}}</option>
+                                                                <option value="passport" {{ old('identity_type') == 'passport' ? 'selected' : '' }}>{{translate('Passport')}}</option>
+                                                                <option value="driving_license" {{ old('identity_type') == 'driving_license' ? 'selected' : '' }}>{{translate('Driving_License')}}</option>
+                                                                <option value="nid" {{ old('identity_type') == 'nid' ? 'selected' : '' }}>{{translate('nid')}}</option>
+                                                                <option value="trade_license" {{ old('identity_type') == 'trade_license' ? 'selected' : '' }}>{{translate('Trade_License')}}</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="input-wrap form-floating form-floating__icon mt-30">
+                                                            <input type="text" class="form-control" name="identity_number"
+                                                                    placeholder="{{translate('Identity Number')}}"
+                                                                    value="{{old('identity_number')}}" required>
+                                                            <label>{{translate('Identity_Number')}}</label>
+                                                            <span class="material-icons">badge</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-6 mb-30">
+                                                    <div class="bg-light rounded p-xxl-4 p-3 h-100">
+                                                        <div class="input-wrap">
+                                                            <div class="text-center mb-20">
+                                                                <div class="text-dark fs-16 mb-1">{{translate('Identity Image')}} <span class="text-danger">*</span></div>
+                                                                <p class="opacity-75 mx-auto text-center fs-12">
+                                                                    {{ implode(', ', array_column(IMAGEEXTENSION, 'key')) }}
+                                                                    {{ translate('maximum size') }} {{ readableUploadMaxFileSize('image') }}
+                                                                    <strong class="text-dark">2:1</strong>
                                                                 </p>
                                                             </div>
-                                                            <div class="file_error">
-
+                                                            <div class="d-flex flex-column align-items-start gap-3">
+                                                                <div class="d-flex" id="multi_image_picker"></div>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -134,81 +184,40 @@
                                             </div>
 
                                             <div class="d-flex flex-column gap-1 mb-20">
-                                                <h4>{{translate('Business_Information')}}</h4>
-                                                <p>{{translate('Give verified information to verify a employee')}}</p>
+                                                <h3>{{translate('Account_Information')}}</h3>
+                                                <p class="fs-12">{{translate('This info will need for employee’s future login')}}</p>
                                             </div>
-
-                                            <hr class="mb-30">
-
-                                            <div class="row">
-                                                <div class="col-lg-6 mb-30">
-                                                    <div class="input-wrap">
-                                                        <select class="select-identity theme-input-style" name="identity_type" required>
-                                                            <option value="0" disabled>{{translate('Select_Identity_Type')}}</option>
-                                                            <option value="passport" {{ old('identity_type') == 'passport' ? 'selected' : '' }}>{{translate('Passport')}}</option>
-                                                            <option value="driving_license" {{ old('identity_type') == 'driving_license' ? 'selected' : '' }}>{{translate('Driving_License')}}</option>
-                                                            <option value="nid" {{ old('identity_type') == 'nid' ? 'selected' : '' }}>{{translate('nid')}}</option>
-                                                            <option value="trade_license" {{ old('identity_type') == 'trade_license' ? 'selected' : '' }}>{{translate('Trade_License')}}</option>
-                                                        </select>
-                                                    </div>
-                                                    <div class="input-wrap form-floating form-floating__icon mt-30">
-                                                        <input type="text" class="form-control" name="identity_number"
-                                                                placeholder="{{translate('Identity Number')}}"
-                                                                value="{{old('identity_number')}}" required>
-                                                        <label>{{translate('Identity_Number')}}</label>
-                                                        <span class="material-icons">badge</span>
-                                                    </div>
-                                                </div>
-                                                <div class="col-lg-6 mb-30">
-                                                    <div class="input-wrap">
-                                                        <div class="d-flex flex-column align-items-center gap-3">
-                                                            <div class="text-muted">{{translate('Identification_Image')}} (2:1) <span class="text-danger">*</span></div>
-                                                            <div class="d-flex" id="multi_image_picker"></div>
-                                                            <p class="opacity-75 max-w220 mx-auto text-center fs-12">
-                                                                {{ translate('Image format')}} - {{ implode(', ', array_column(IMAGEEXTENSION, 'key')) }}
-                                                                {{ translate("Image Size") }} - {{ translate('maximum size') }} {{ readableUploadMaxFileSize('image') }}
-                                                            </p>
+                                            <div class="bg-light rounded p-xxl-4 p-3">
+                                                <div class="row g-4">
+                                                    <div class="col-lg-4">
+                                                        <div class="input-wrap m-0 form-floating form-floating__icon">
+                                                            <input type="email" class="form-control" name="email"
+                                                                    placeholder="{{translate('Email_*')}}"
+                                                                    value="{{old('email')}}" required>
+                                                            <label>{{translate('Email_*')}}</label>
+                                                            <span class="material-icons">mail</span>
                                                         </div>
                                                     </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="d-flex flex-column gap-1 mb-20">
-                                                <h4>{{translate('Account_Information')}}</h4>
-                                                <p>{{translate('This info will need for employee’s future login')}}</p>
-                                            </div>
-
-                                            <hr class="mb-30">
-
-                                            <div class="row">
-                                                <div class="col-lg-4 mb-30">
-                                                    <div class="input-wrap form-floating form-floating__icon">
-                                                        <input type="email" class="form-control" name="email"
-                                                                placeholder="{{translate('Email_*')}}"
-                                                                value="{{old('email')}}" required>
-                                                        <label>{{translate('Email_*')}}</label>
-                                                        <span class="material-icons">mail</span>
+                                                    <div class="col-lg-4">
+                                                        <div class="input-wrap m-0 form-floating form-floating__icon">
+                                                            <input type="password" class="form-control" name="password" value="password"
+                                                                    placeholder="{{translate('Password')}}" id="pass" required>
+                                                            <label>{{translate('Password')}}</label>
+                                                            <span class="material-icons togglePassword">visibility_off</span>
+                                                            <span class="material-icons">lock</span>
+                                                        </div>
+                                                        <small class="text-danger d-flex mt-1">{{translate('Password_Must_be_at_Least_8_Digits')}}</small>
                                                     </div>
-                                                </div>
-                                                <div class="col-lg-4 mb-30">
-                                                    <div class="input-wrap form-floating form-floating__icon">
-                                                        <input type="password" class="form-control" name="password" value="password"
-                                                                placeholder="{{translate('Password')}}" id="pass" required>
-                                                        <label>{{translate('Password')}}</label>
-                                                        <span class="material-icons togglePassword">visibility_off</span>
-                                                        <span class="material-icons">lock</span>
-                                                    </div>
-                                                    <small class="text-danger d-flex mt-1">{{translate('Password_Must_be_at_Least_8_Digits')}}</small>
-                                                </div>
-                                                <div class="col-lg-4 mb-30">
-                                                    <div class="input-wrap form-floating form-floating__icon">
-                                                        <input type="password" class="form-control" name="confirm_password"
-                                                                value="password"
-                                                                placeholder="{{translate('Confirm_Password')}}" id="confirm_password"
-                                                                required>
-                                                        <label>{{translate('Confirm_Password')}}</label>
-                                                        <span class="material-icons togglePassword">visibility_off</span>
-                                                        <span class="material-icons">lock</span>
+                                                    <div class="col-lg-4">
+                                                        <div class="input-wrap m-0 form-floating form-floating__icon">
+                                                            <input type="password" class="form-control" name="confirm_password"
+                                                                    value="password"
+                                                                    placeholder="{{translate('Confirm_Password')}}" id="confirm_password"
+                                                                    required>
+                                                            <label>{{translate('Confirm_Password')}}</label>
+                                                            <span class="material-icons togglePassword">visibility_off</span>
+                                                            <span class="material-icons">lock</span>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>

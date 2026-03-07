@@ -46,6 +46,9 @@ class LoginSetupController extends Controller
         $webPage = $request->has('web_page') ? $request['web_page'] : 'customer_login';
 
         if ($webPage == 'customer_login') {
+            //update setup guideline data
+            updateSetupGuidelineTutorialsOptions(auth()->user()->id,'login_option', 'web');
+
             $loginOptionsValue = $this->loginSetup->where(['key' => 'login_options'])?->first()?->value;
             $loginOptions = json_decode($loginOptionsValue);
 

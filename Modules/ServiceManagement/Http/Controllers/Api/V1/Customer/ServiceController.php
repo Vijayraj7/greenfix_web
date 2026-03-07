@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Modules\BookingModule\Entities\Booking;
+use Modules\CategoryManagement\Entities\Category;
 use Modules\CustomerModule\Traits\CustomerSearchTrait;
 use Modules\ReviewModule\Entities\Review;
 use Modules\ServiceManagement\Entities\FavoriteService;
@@ -33,13 +34,14 @@ class ServiceController extends Controller
     private RecentSearch $recentSearch;
     private Booking $booking;
     private Zone $zone;
+    private Category $category;
 
     private  FavoriteService $favoriteService;
 
     private bool $is_customer_logged_in;
     private mixed $customer_user_id;
 
-    public function __construct(Service $service, Review $review, RecentView $recentView, RecentSearch $recentSearch, Booking $booking, Zone $zone, FavoriteService $favoriteService, Request $request)
+    public function __construct(Service $service, Review $review, RecentView $recentView, RecentSearch $recentSearch, Booking $booking, Zone $zone, FavoriteService $favoriteService, Request $request, Category $category)
     {
         $this->service = $service;
         $this->review = $review;
@@ -48,6 +50,7 @@ class ServiceController extends Controller
         $this->booking = $booking;
         $this->zone = $zone;
         $this->favoriteService = $favoriteService;
+        $this->category = $category;
 
         $this->is_customer_logged_in = (bool)auth('api')->user();
         $this->customer_user_id = $this->is_customer_logged_in ? auth('api')->user()->id : $request['guest_id'];
@@ -735,9 +738,9 @@ class ServiceController extends Controller
      * @param string $id
      * @return JsonResponse
      */
-    public function show(Request $request, string $id): JsonResponse
+    public function show(Request $request, string $slug): JsonResponse
     {
-        $service = $this->service->where('id', $id)
+        $service = $this->service->where('slug', $slug)
             ->with(['category.children', 'variations', 'faqs' => function ($query) {
                 return $query->where('is_active', 1);
             }])
@@ -750,7 +753,7 @@ class ServiceController extends Controller
             }
 
             if (auth('api')->user()) {
-                $this->visited_service_update(auth('api')->user()->id, $id);
+                $this->visited_service_update(auth('api')->user()->id, $service->id);
 
                 //search log volume update
                 if ($request->has('attribute') && $request->attribute != 'service') {
@@ -768,7 +771,8 @@ class ServiceController extends Controller
             $service['variations_app_format'] = self::variationsAppFormat($service);
             return response()->json(response_formatter(DEFAULT_200, $service), 200);
         }
-        return response()->json(response_formatter(DEFAULT_204), 204);
+
+        return response()->json(response_formatter(DEFAULT_204), 200);
     }
 
     /**
@@ -823,7 +827,7 @@ class ServiceController extends Controller
      * @param string $subCategoryId
      * @return JsonResponse
      */
-    public function servicesBySubcategory(Request $request, string $subCategoryId): JsonResponse
+    public function servicesBySubcategory(Request $request, string $slug): JsonResponse
     {
         $validator = Validator::make($request->all(), [
             'limit' => 'required|numeric|min:1|max:200',
@@ -832,6 +836,12 @@ class ServiceController extends Controller
 
         if ($validator->fails()) {
             return response()->json(response_formatter(DEFAULT_400, null, error_processor($validator)), 400);
+        }
+
+        $subCategoryId = $this->category->withoutGlobalScopes()->where(['slug' => $slug])->ofType('sub')->first()?->id ?? null;
+
+        if ($subCategoryId == null) {
+            return response()->json(response_formatter(DEFAULT_404, null, [['code' => 'sub-category', 'message' => translate('Sub Category not found')]]), 404);
         }
 
         $servicesQuery = $this->service

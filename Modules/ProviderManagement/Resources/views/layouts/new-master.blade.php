@@ -74,6 +74,8 @@
 <main class="main-area">
     @yield('content')
 
+    @include('providermanagement::layouts.partials._setup_guildeline')
+
     @include('providermanagement::layouts.partials._footer')
 
     @if(env('APP_ENV') == 'demo')
@@ -141,6 +143,7 @@ $serviceLocations = getProviderSettings(providerId: auth()->user()->provider->id
 <audio id="audio-element">
     <source src="{{asset('public/assets/provider-module')}}/sound/notification.mp3" type="audio/mpeg">
 </audio>
+
 
 <script>
     "use strict";
@@ -396,122 +399,6 @@ $serviceLocations = getProviderSettings(providerId: auth()->user()->provider->id
         }
         $('.ctrlplusk').text(shortcutText);
     });
-
-
-
-    {{--$(document).ready(function () {--}}
-    {{--    $('#searchForm input[name="search"]').keyup(function () {--}}
-    {{--        var searchKeyword = $(this).val().trim();--}}
-
-    {{--        if (searchKeyword.length >= 0) {--}}
-    {{--            $.ajax({--}}
-    {{--                type: 'POST',--}}
-    {{--                url: $('#searchForm').attr('action'),--}}
-    {{--                data: {search: searchKeyword, _token: $('input[name="_token"]').val()},--}}
-    {{--                success: function (response) {--}}
-    {{--                    if (response.length === 0) {--}}
-    {{--                        $('#searchResults').html('<div class="text-center text-muted py-5">{{translate('No results found')}}</div>');--}}
-    {{--                    } else {--}}
-    {{--                        var resultHtml = '';--}}
-    {{--                        response.forEach(function (route) {--}}
-    {{--                            resultHtml += '<a href="' + route.fullRoute + '" class="search-list-item d-flex flex-column" data-route-name="' + route.routeName + '" data-route-uri="' + route.URI + '" data-route-full-url="' + route.fullRoute + '" aria-current="true">';--}}
-    {{--                            resultHtml += '<h5>' + route.routeName + '</h5>';--}}
-    {{--                            resultHtml += '<p class="text-muted fs-12">' + route.URI + '</p>';--}}
-    {{--                            resultHtml += '</a>';--}}
-    {{--                        });--}}
-    {{--                        $('#searchResults').html('<div class="search-list d-flex flex-column">' + resultHtml + '</div>');--}}
-
-    {{--                        $('.search-list-item').click(function () {--}}
-    {{--                            var routeName = $(this).data('route-name');--}}
-    {{--                            var routeUri = $(this).data('route-uri');--}}
-    {{--                            var routeFullUrl = $(this).data('route-full-url');--}}
-
-    {{--                            $.ajax({--}}
-    {{--                                type: 'POST',--}}
-    {{--                                url: '{{ route('provider.search.routing.store') }}',--}}
-    {{--                                data: {--}}
-    {{--                                    routeName: routeName,--}}
-    {{--                                    routeUri: routeUri,--}}
-    {{--                                    routeFullUrl: routeFullUrl,--}}
-    {{--                                    searchKeyword: searchKeyword,--}}
-    {{--                                    _token: $('input[name="_token"]').val()--}}
-    {{--                                },--}}
-    {{--                                success: function (response) {--}}
-    {{--                                    console.log(response.message);--}}
-    {{--                                },--}}
-    {{--                                error: function (xhr, status, error) {--}}
-    {{--                                    console.error(xhr.responseText);--}}
-    {{--                                }--}}
-    {{--                            });--}}
-    {{--                        });--}}
-    {{--                    }--}}
-    {{--                },--}}
-    {{--                error: function (xhr, status, error) {--}}
-    {{--                    console.error(xhr.responseText);--}}
-    {{--                }--}}
-    {{--            });--}}
-    {{--        } else {--}}
-    {{--            $('#searchResults').html('<div class="text-center text-muted py-5">{{translate('Write a character.')}}.</div>');--}}
-    {{--        }--}}
-    {{--    });--}}
-    {{--});--}}
-
-    {{--$(document).ready(function () {--}}
-    {{--    $("#staticBackdrop").on("shown.bs.modal", function () {--}}
-    {{--        $(this).find("#searchForm input[type=search]").val('');--}}
-    {{--        $('#searchResults').html('<div class="text-center text-muted py-5">{{translate('Loading recent searches')}}...</div>');--}}
-    {{--        $(this).find("#searchForm input[type=search]").focus();--}}
-
-    {{--        $.ajax({--}}
-    {{--            type: 'GET',--}}
-    {{--            url: '{{ route('provider.recent.search') }}',--}}
-    {{--            success: function (response) {--}}
-    {{--                if (response.length === 0) {--}}
-    {{--                    $('#searchResults').html('<div class="text-center text-muted py-5">{{translate('It appears that you have not yet searched.')}}.</div>');--}}
-    {{--                } else {--}}
-    {{--                    var resultHtml = '';--}}
-    {{--                    response.forEach(function (route) {--}}
-    {{--                        resultHtml += '<a href="' + route.route_full_url + '" class="search-list-item d-flex flex-column" data-route-name="' + route.route_name + '" data-route-uri="' + route.route_uri + '" data-route-full-url="' + route.route_full_url + '" aria-current="true">';--}}
-    {{--                        resultHtml += '<h5>' + route.route_name + '</h5>';--}}
-    {{--                        resultHtml += '<p class="text-muted fs-12  mb-0">' + route.route_uri + '</p>';--}}
-    {{--                        resultHtml += '</a>';--}}
-    {{--                    });--}}
-    {{--                    $('#searchResults').html('<div class="recent-search fs-16 fw-500 animate">' +--}}
-    {{--                        @json(translate('Recent Search')) + '<div class="search-list d-flex flex-column mt-2">' + resultHtml + '</div></div>');--}}
-
-    {{--                    $('.search-list-item').click(function () {--}}
-    {{--                        var routeName = $(this).data('route-name');--}}
-    {{--                        var routeUri = $(this).data('route-uri');--}}
-    {{--                        var routeFullUrl = $(this).data('route-full-url');--}}
-    {{--                        var searchKeyword = $('input[type=search]').val().trim();--}}
-
-    {{--                        $.ajax({--}}
-    {{--                            type: 'POST',--}}
-    {{--                            url: '{{ route('provider.search.routing.store') }}',--}}
-    {{--                            data: {--}}
-    {{--                                routeName: routeName,--}}
-    {{--                                routeUri: routeUri,--}}
-    {{--                                routeFullUrl: routeFullUrl,--}}
-    {{--                                searchKeyword: searchKeyword,--}}
-    {{--                                _token: $('input[name="_token"]').val()--}}
-    {{--                            },--}}
-    {{--                            success: function (response) {--}}
-    {{--                                console.log(response.message);--}}
-    {{--                            },--}}
-    {{--                            error: function (xhr, status, error) {--}}
-    {{--                                console.error(xhr.responseText);--}}
-    {{--                            }--}}
-    {{--                        });--}}
-    {{--                    });--}}
-    {{--                }--}}
-    {{--            },--}}
-    {{--            error: function (xhr, status, error) {--}}
-    {{--                console.error(xhr.responseText);--}}
-    {{--                $('#searchResults').html('<div class="text-center text-muted py-5">{{translate('Loading recent searches')}}.</div>');--}}
-    {{--            }--}}
-    {{--        });--}}
-    {{--    });--}}
-    {{--});--}}
 
     document.addEventListener('keydown', function(event) {
         if (event.ctrlKey && event.key === 'k') {

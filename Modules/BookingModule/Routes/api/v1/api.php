@@ -50,6 +50,8 @@ Route::group(['prefix' => 'provider', 'as' => 'provider.', 'namespace' => 'Api\V
         Route::put('repeat/service/edit/update-booking', [ProviderBookingController::class, 'updateBookingRepeat']);
         Route::put('service/edit/remove-service', [ProviderBookingController::class, 'removeService']);
         Route::post('change-service-location', [ProviderBookingController::class, 'changeServiceLocation']);
+        Route::get('calendar/view', [ProviderBookingController::class, 'bookingCalendar']);
+
     });
 });
 

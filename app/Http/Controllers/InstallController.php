@@ -228,7 +228,7 @@ class InstallController extends Controller
                     ADMIN_IDENTIFIER=' . $adminEmail . '
                     SOFTWARE_ID=NDAyMjQ3NzI=
 
-                    SOFTWARE_VERSION=3.6
+                    SOFTWARE_VERSION=3.7
                     ';
             $file = fopen(base_path('.env'), 'w');
             fwrite($file, $output);

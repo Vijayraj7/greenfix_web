@@ -63,11 +63,17 @@ class CategoryController extends Controller
         $validator = Validator::make($request->all(), [
             'limit' => 'required|numeric|min:1|max:200',
             'offset' => 'required|numeric|min:1|max:100000',
-            'id' => 'required|uuid'
+            'slug' => 'required|string'
         ]);
 
         if ($validator->fails()) {
             return response()->json(response_formatter(DEFAULT_400, null, error_processor($validator)), 400);
+        }
+
+        $categoryId = $this->category->where(['slug' => $request['slug']])->first()?->id ?? null;
+
+        if ($categoryId == null) {
+            return response()->json(response_formatter(DEFAULT_404, null, [['code' => 'category', 'message' => translate('Category not found')]]), 404);
         }
 
         $childes = $this->category->ofStatus(1)->ofType('sub')->withoutGlobalScopes(['zone_wise_data'])
@@ -77,13 +83,14 @@ class CategoryController extends Controller
             ->whereHas('parent', function ($query) {
                 $query->ofStatus(1);
             })
-            ->where('parent_id', $request['id'])->orderBY('name', 'asc')
+            ->where('parent_id', $categoryId)
+            ->orderBY('name', 'asc')
             ->paginate($request['limit'], ['*'], 'offset', $request['offset'])->withPath('');
 
         if (count($childes) > 0) {
             $authUser = auth('api')->user();
             if ($authUser) {
-                $recentView = $this->recentView->firstOrNew(['category_id' => $request->id, 'user_id' => $authUser->id]);
+                $recentView = $this->recentView->firstOrNew(['category_id' => $categoryId, 'user_id' => $authUser->id]);
                 $recentView->total_category_view += 1;
                 $recentView->save();
             }

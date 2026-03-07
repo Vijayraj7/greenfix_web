@@ -3,7 +3,6 @@
 namespace Modules\ProviderManagement\Http\Controllers\Api\V1\Provider;
 
 use App\Traits\MaintenanceModeTrait;
-use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
@@ -13,8 +12,6 @@ use Illuminate\Support\Facades\Validator;
 use Modules\BusinessSettingsModule\Entities\BusinessPageSetting;
 use Modules\PaymentModule\Entities\Setting;
 use Modules\UserManagement\Entities\User;
-use Stevebauman\Location\Facades\Location;
-use DateTimeZone;
 use Grimzy\LaravelMysqlSpatial\Types\Point;
 
 class ConfigController extends Controller
@@ -56,8 +53,6 @@ class ConfigController extends Controller
      */
     public function config(Request $request): JsonResponse
     {
-        $location = Location::get($request->ip());
-
         $advancedBooking =  [
             'advanced_booking_restriction_value' => (int) business_config('advanced_booking_restriction_value', 'booking_setup')?->live_values,
             'advanced_booking_restriction_type' => business_config('advanced_booking_restriction_type', 'booking_setup')?->live_values,
@@ -151,8 +146,8 @@ class ConfigController extends Controller
             'refund_policy' => (business_config('refund_policy', 'pages_setup'))->is_active ? route('refund-policy') : "",
             'cancellation_policy' => (business_config('cancellation_policy', 'pages_setup'))->is_active ? route('cancellation-policy') : "",
             'default_location' => ['default' => [
-                'lat' => $location->latitude ?? null,
-                'lon' => $location->longitude ?? null
+                'lat' => (business_config('address_latitude', 'business_information'))->live_values ?? 23.811842872190,
+                'lon' => (business_config('address_longitude', 'business_information'))->live_values ?? 90.66504678008192
             ]],
             'pagination_limit' => (int)pagination_limit(),
             'time_format' => (business_config('time_format', 'business_information'))->live_values ?? '24h',

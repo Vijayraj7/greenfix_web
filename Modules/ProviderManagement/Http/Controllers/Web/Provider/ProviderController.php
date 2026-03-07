@@ -273,9 +273,14 @@ class ProviderController extends Controller
             ->latest()
             ->take(5)
             ->get();
+
         $data[] = [
             'recent_transactions' => $recentTransactions,
-            'this_month_trx_count' => $transaction->where(['to_user_id' => $request->user()->id])->where('credit', '>', 0)->whereMonth('created_at', date('m'))->count()
+            'this_month_trx_count' => $transaction->where(['to_user_id' => $request->user()->id])
+                ->where('credit', '>', 0)
+                ->whereYear('created_at', Carbon::now()->year)
+                ->whereMonth('created_at', Carbon::now()->month)
+                ->count()
         ];
 
         //customize booking
@@ -1027,5 +1032,25 @@ class ProviderController extends Controller
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 500);
         }
+    }
+
+    public function refreshSetupGuideUI(): JsonResponse
+    {
+        $setup = getSetupGuideSteps('provider_panel', auth()->user());
+
+        return response()->json([
+            'percentage' => $setup['percentage'],
+            'unchecked_keys' => collect($setup['steps'])
+                ->where('checked', false)
+                ->pluck('key')
+                ->values(),
+            'unchecked_count' => collect($setup['steps'])
+                ->where('checked', false)
+                ->count(),
+            'steps' => $setup['steps'],
+            'all_completed' => collect($setup['steps'])
+                ->every(fn ($step) => $step['checked']),
+        ]);
+
     }
 }

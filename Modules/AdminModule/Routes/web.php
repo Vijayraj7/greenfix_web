@@ -16,6 +16,8 @@ use Modules\AdminModule\Http\Controllers\Web\Admin\Report\TransactionReportContr
 Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Web\Admin', 'middleware' => ['admin', 'actch:admin_panel']], function () {
     Route::get('component', [AdminController::class, 'component'])->name('component');
 
+    Route::get('setup-guide/status', [AdminController::class, 'refreshSetupGuideUI'])->name('setup-guide.status');
+
     Route::post('search-routing', [AdminController::class, 'searchRouting'])->name('search.routing');
     Route::get('dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
     Route::get('update-dashboard-earning-graph', [AdminController::class, 'updateDashboardEarningGraph'])->name('update-dashboard-earning-graph');
@@ -85,3 +87,5 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Web\Admin',
     });
 
 });
+
+

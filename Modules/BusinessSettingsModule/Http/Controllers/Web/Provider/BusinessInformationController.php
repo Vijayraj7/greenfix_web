@@ -230,6 +230,9 @@ class BusinessInformationController extends Controller
             ]
         );
 
+        //update setup guideline data
+        updateSetupGuidelineTutorialsOptions(auth()->user()->id,'service_availability', 'web');
+
         Toastr::success(translate('successfully updated'));
         return back();
     }
@@ -306,6 +309,9 @@ class BusinessInformationController extends Controller
         DB::transaction(function () use ($provider, $owner) {
             $owner->save();
             $provider->save();
+
+            //update setup guideline data
+            updateSetupGuidelineTutorialsOptions(auth()->user()->id,'business_information', 'web');
         });
 
         Toastr::success(translate(DEFAULT_UPDATE_200['message']));

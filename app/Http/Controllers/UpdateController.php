@@ -62,7 +62,7 @@ class UpdateController extends Controller
         $this->setEnvironmentValue('SOFTWARE_ID', 'NDAyMjQ3NzI=');
         $this->setEnvironmentValue('BUYER_USERNAME', $username);
         $this->setEnvironmentValue('PURCHASE_CODE', $purchaseKey);
-        $this->setEnvironmentValue('SOFTWARE_VERSION', '3.6');
+        $this->setEnvironmentValue('SOFTWARE_VERSION', '3.7');
         $this->setEnvironmentValue('APP_ENV', 'live');
         $this->setEnvironmentValue('APP_URL', url('/'));
 

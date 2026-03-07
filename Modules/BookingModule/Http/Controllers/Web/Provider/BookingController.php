@@ -1838,4 +1838,265 @@ class BookingController extends Controller
         return back();
     }
 
+    public function calendarView(Request $request): Renderable
+    {
+        return view('bookingmodule::provider.booking.calendar-view');
+    }
+
+    public function calendarEvents(Request $request)
+    {
+        $providerId = $request->user()?->provider?->id;
+        if (!$providerId) {
+            return response()->json([]);
+        }
+
+        $mode = $request->mode ?? 'dayGridMonth';
+
+        /*
+        |--------------------------------------------------------------------------
+        | Resolve calendar date range
+        |--------------------------------------------------------------------------
+        */
+        if ($request->filled('filter_start_date') && $request->filled('filter_end_date')) {
+
+            $sDate = Carbon::parse($request->filter_start_date)->startOfDay();
+            $eDate = Carbon::parse($request->filter_end_date)->endOfDay();
+
+        } else {
+
+            if ($mode === 'dayGridMonth') {
+                $sDate = Carbon::create($request->year, $request->month, 1)->startOfDay();
+                $eDate = Carbon::create($request->year, $request->month, 1)->endOfMonth()->endOfDay();
+
+            } elseif ($mode === 'timeGridWeek') {
+                $sDate = Carbon::parse($request->start_date)->startOfDay();
+                $eDate = Carbon::parse($request->end_date)->endOfDay();
+
+            } else { // timeGridDay
+                $sDate = Carbon::parse($request->date)->startOfDay();
+                $eDate = Carbon::parse($request->date)->endOfDay();
+            }
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | Load bookings (regular + repeat masters)
+        |--------------------------------------------------------------------------
+        */
+        $bookings = Booking::where('provider_id', $providerId)
+            ->where(function ($q) use ($sDate, $eDate) {
+
+                // Regular bookings
+                $q->where(function ($q1) use ($sDate, $eDate) {
+                    $q1->where('is_repeated', 0)
+                        ->whereBetween('service_schedule', [$sDate, $eDate]);
+                })
+
+                    // Repeat bookings (date comes from repeat table)
+                    ->orWhere(function ($q2) use ($sDate, $eDate) {
+                        $q2->where('is_repeated', 1)
+                            ->whereHas('repeat', function ($qr) use ($sDate, $eDate) {
+                                $qr->whereBetween('service_schedule', [$sDate, $eDate]);
+                            });
+                    });
+            })
+            ->when($request->filled('booking_status'), function ($q) use ($request) {
+                $statuses = explode(',', $request->booking_status);
+                $q->whereIn('booking_status', $statuses);
+            })
+            ->when(
+                $request->filled('booking_type') && $request->booking_type !== 'all',
+                fn ($q) => $q->where('is_repeated', $request->booking_type === 'repeat' ? 1 : 0)
+            )
+            ->with('repeat')
+            ->get();
+
+        /*
+        |--------------------------------------------------------------------------
+        | EXPAND bookings into calendar items
+        */
+
+        $calendarItems = [];
+
+        foreach ($bookings as $booking) {
+
+            // REGULAR BOOKING → single calendar entry
+            if (!$booking->is_repeated) {
+
+                if (!$booking->service_schedule) {
+                    continue;
+                }
+
+                $calendarItems[] = [
+                    'booking_id' => $booking->id,
+                    'schedule'   => Carbon::parse($booking->service_schedule),
+                ];
+
+                continue;
+            }
+
+            // REPEAT BOOKING → multiple calendar entries
+            foreach ($booking->repeat as $repeat) {
+
+                // must fall inside calendar range
+                if (
+                    $repeat->service_schedule < $sDate ||
+                    $repeat->service_schedule > $eDate
+                ) {
+                    continue;
+                }
+
+                // optional status filter
+                if ($request->filled('booking_status')) {
+                    $statuses = explode(',', $request->booking_status);
+                    if (!in_array($repeat->booking_status, $statuses)) {
+                        continue;
+                    }
+                }
+
+                $calendarItems[] = [
+                    'booking_id' => $booking->id,
+                    'schedule'   => Carbon::parse($repeat->service_schedule),
+                ];
+            }
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | Group expanded items by date/hour (FullCalendar format)
+        |--------------------------------------------------------------------------
+        */
+        $groups = [];
+
+        foreach ($calendarItems as $item) {
+
+            $dt = $item['schedule'];
+
+            if ($mode === 'dayGridMonth') {
+
+                $key = $dt->format('Y-m-d');
+                $start = $dt->format('Y-m-d') . 'T00:00:00';
+                $end   = $dt->format('Y-m-d') . 'T23:59:59';
+
+            } else {
+
+                $key = $dt->format('Y-m-d H:00');
+                $start = $dt->format('Y-m-d\TH:00:00');
+                $end   = $dt->copy()->addHour()->format('Y-m-d\TH:00:00');
+            }
+
+            if (!isset($groups[$key])) {
+                $groups[$key] = [
+                    'count'      => 0,
+                    'start'      => $start,
+                    'end'        => $end,
+                    'bookingIds' => [],
+                ];
+            }
+
+            $groups[$key]['count']++;
+            $groups[$key]['bookingIds'][] = $item['booking_id'];
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | Build FullCalendar events
+        |--------------------------------------------------------------------------
+        */
+        $events = [];
+
+        foreach ($groups as $group) {
+            $events[] = [
+                'title'      => $group['count'] > 1
+                    ? sprintf('%02d Bookings', $group['count'])
+                    : sprintf('%02d Booking', $group['count']),
+                'start'      => $group['start'],
+                'end'        => $group['end'],
+                'allDay'     => false,
+                'bookingIds' => $group['bookingIds'],
+                'date' => $group['start']
+            ];
+        }
+
+        return response()->json($events);
+    }
+
+
+    public function getCalendarBookingList(Request $request): JsonResponse
+    {
+        $ids = $request->input('ids', []);
+        $rawDate = $request->input('date');
+
+        $calendarDate = $request->date
+            ? Carbon::createFromFormat('Y-m-d', $rawDate)
+            : null;
+        //dd($request->all(), $ids, $rawDate, $calendarDate);
+
+        $bookings = Booking::with('repeat')
+            ->whereIn('id', $ids)
+            ->get();
+        //dd($bookings);
+
+        return response()->json(
+            $bookings->map(function ($booking) use ($calendarDate) {
+
+                $serviceSchedule = null;
+
+                /*
+                 |--------------------------------------------
+                 | REPEAT BOOKING → match clicked date
+                 |--------------------------------------------
+                 */
+                if ($booking->is_repeated && $booking->repeat->isNotEmpty() && $calendarDate) {
+
+                    $matchedRepeat = $booking->repeat
+                        ->first(function ($repeat) use ($calendarDate) {
+                            return Carbon::parse($repeat->service_schedule)
+                                ->isSameDay($calendarDate);
+                        });
+
+                    // If matched by date → use it
+                    if ($matchedRepeat) {
+                        $serviceSchedule = $matchedRepeat->service_schedule;
+                    }
+                }
+
+                // fallback logic
+                if (!$serviceSchedule) {
+                    if ($booking->is_repeated && $booking->repeat->isNotEmpty()) {
+                        $serviceSchedule = $booking->repeat
+                            ->sortBy('service_schedule')
+                            ->first()
+                            ?->service_schedule;
+                    } else {
+                        $serviceSchedule = $booking->service_schedule;
+                    }
+                }
+
+                if (!$serviceSchedule) {
+                    return null;
+                }
+
+                return [
+                    'id'              => $booking->id,
+                    'readable_id'     => $booking->readable_id,
+                    'time'            => Carbon::parse($serviceSchedule)->format('h:i A'),
+                    'service_date'    => Carbon::parse($serviceSchedule)->format('d M, Y, h:i a'),
+                    'service_location'=> $booking->service_location ?? 'At your location',
+                    'status'          => ucfirst($booking->booking_status),
+                    'statusClass'     => match ($booking->booking_status) {
+                        'pending'   => 'info',
+                        'accepted'  => 'primary',
+                        'ongoing'   => 'warning',
+                        'completed' => 'success',
+                        'canceled'  => 'danger',
+                        default     => 'info'
+                    },
+                    'amount'          => with_currency_symbol($booking->total_booking_amount),
+                    'is_repeated'     => $booking->is_repeated
+                ];
+            })->filter()->values()
+        );
+    }
+
 }

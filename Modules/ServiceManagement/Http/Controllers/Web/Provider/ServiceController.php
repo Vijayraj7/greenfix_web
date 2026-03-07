@@ -221,6 +221,10 @@ class ServiceController extends Controller
         if ($parent) {
             $subscribedService->category_id = $parent->parent_id;
             $subscribedService->save();
+
+            //update setup guideline data
+            updateSetupGuidelineTutorialsOptions(auth()->user()->id,'subscribe_services', 'web');
+
             return response()->json(response_formatter(DEFAULT_200), 200);
         }
 

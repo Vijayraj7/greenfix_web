@@ -199,103 +199,105 @@
                         </div>
                     </div>
                 </div>
-                <div class="tab-pane fade {{isset($webPage) && $webPage=='review'?'show active':''}}"
-                     id="review-tab-pane">
-                    <div class="card mb-30">
-                        <div class="card-body p-30">
-                            <div class="row align-items-center">
-                                <div class="col-lg-5 mb-30 mb-lg-0 d-flex justify-content-center">
-                                    <div class="rating-review">
-                                        <h2 class="rating-review__title">
-                                            <span class="rating-review__out-of">{{$service->avg_rating}}</span>/5
-                                        </h2>
-                                        <div class="rating">
+                <div class="tab-pane fade {{isset($webPage) && $webPage=='review'?'show active':''}}" id="review-tab-pane">
+
+                    @if($reviews->total() > 0)
+                        <div class="card mb-30">
+                            <div class="card-body p-30">
+                                <div class="row align-items-center">
+                                    <div class="col-lg-5 mb-30 mb-lg-0 d-flex justify-content-center">
+                                        <div class="rating-review">
+                                            <h2 class="rating-review__title">
+                                                <span class="rating-review__out-of">{{$service->avg_rating}}</span>/5
+                                            </h2>
+                                            <div class="rating">
                                             <span
                                                 class="{{$service->avg_rating>=1?'material-icons':'material-symbols-outlined'}}">{{$service->avg_rating>=1?'star':'grade'}}</span>
-                                            <span
-                                                class="{{$service->avg_rating>=2?'material-icons':'material-symbols-outlined'}}">{{$service->avg_rating>=2?'star':'grade'}}</span>
-                                            <span
-                                                class="{{$service->avg_rating>=3?'material-icons':'material-symbols-outlined'}}">{{$service->avg_rating>=3?'star':'grade'}}</span>
-                                            <span
-                                                class="{{$service->avg_rating>=4?'material-icons':'material-symbols-outlined'}}">{{$service->avg_rating>=4?'star':'grade'}}</span>
-                                            <span
-                                                class="{{$service->avg_rating>=5?'material-icons':'material-symbols-outlined'}}">{{$service->avg_rating>=5?'star':'grade'}}</span>
-                                        </div>
-                                        <div class="rating-review__info d-flex flex-wrap gap-3">
-                                            @php($total_review_count = $service->reviews->where('is_active', 1)->whereNotNull('review_rating')->whereNotNull('review_comment')->count())
-                                            @php($totalReviews = $service->reviews->where('is_active', 1)->whereNotNull('review_rating')->count())
-                                            <span>{{ $totalReviews }} {{ translate('ratings') }}</span>
-                                            <span>{{$total_review_count}} {{translate('reviews')}}</span>
+                                                <span
+                                                    class="{{$service->avg_rating>=2?'material-icons':'material-symbols-outlined'}}">{{$service->avg_rating>=2?'star':'grade'}}</span>
+                                                <span
+                                                    class="{{$service->avg_rating>=3?'material-icons':'material-symbols-outlined'}}">{{$service->avg_rating>=3?'star':'grade'}}</span>
+                                                <span
+                                                    class="{{$service->avg_rating>=4?'material-icons':'material-symbols-outlined'}}">{{$service->avg_rating>=4?'star':'grade'}}</span>
+                                                <span
+                                                    class="{{$service->avg_rating>=5?'material-icons':'material-symbols-outlined'}}">{{$service->avg_rating>=5?'star':'grade'}}</span>
+                                            </div>
+                                            <div class="rating-review__info d-flex flex-wrap gap-3">
+                                                @php($total_review_count = $service->reviews->where('is_active', 1)->whereNotNull('review_rating')->whereNotNull('review_comment')->count())
+                                                @php($totalReviews = $service->reviews->where('is_active', 1)->whereNotNull('review_rating')->count())
+                                                <span>{{ $totalReviews }} {{ translate('ratings') }}</span>
+                                                <span>{{$total_review_count}} {{translate('reviews')}}</span>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="col-lg-7">
-                                    <ul class="common-list common-list__style2 after-none gap-10">
-                                        <li>
-                                            <span class="review-name">{{translate('excellent')}}</span>
-                                            @php($excellent_count=$service->reviews->where('is_active', 1)->where('review_rating',5)->count())
-                                            @php($excellent=(divnum($excellent_count,$total_review_count))*100)
-                                            <div class="progress">
-                                                <div class="progress-bar" role="progressbar"
-                                                     style="width: {{$excellent}}%"
-                                                     aria-valuenow="{{$excellent}}" aria-valuemin="0"
-                                                     aria-valuemax="100">
+                                    <div class="col-lg-7">
+                                        <ul class="common-list common-list__style2 after-none gap-10">
+                                            <li>
+                                                <span class="review-name">{{translate('excellent')}}</span>
+                                                @php($excellent_count=$service->reviews->where('is_active', 1)->where('review_rating',5)->count())
+                                                @php($excellent=(divnum($excellent_count,$total_review_count))*100)
+                                                <div class="progress">
+                                                    <div class="progress-bar" role="progressbar"
+                                                         style="width: {{$excellent}}%"
+                                                         aria-valuenow="{{$excellent}}" aria-valuemin="0"
+                                                         aria-valuemax="100">
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <span class="review-count">{{$excellent_count}}</span>
-                                        </li>
-                                        <li>
-                                            <span class="review-name">{{translate('good')}}</span>
-                                            @php($good_count=$service->reviews->where('is_active', 1)->where('review_rating',4)->count())
-                                            @php($good=(divnum($good_count,$total_review_count))*100)
-                                            <div class="progress">
-                                                <div class="progress-bar" role="progressbar" style="width: {{$good}}%"
-                                                     aria-valuenow="{{$good}}" aria-valuemin="0" aria-valuemax="100">
+                                                <span class="review-count">{{$excellent_count}}</span>
+                                            </li>
+                                            <li>
+                                                <span class="review-name">{{translate('good')}}</span>
+                                                @php($good_count=$service->reviews->where('is_active', 1)->where('review_rating',4)->count())
+                                                @php($good=(divnum($good_count,$total_review_count))*100)
+                                                <div class="progress">
+                                                    <div class="progress-bar" role="progressbar" style="width: {{$good}}%"
+                                                         aria-valuenow="{{$good}}" aria-valuemin="0" aria-valuemax="100">
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <span class="review-count">{{$good_count}}</span>
-                                        </li>
-                                        <li>
-                                            <span class="review-name">{{translate('avarage')}}</span>
-                                            @php($average_count=$service->reviews->where('is_active', 1)->where('review_rating',3)->count())
-                                            @php($average=(divnum($average_count,$total_review_count))*100)
-                                            <div class="progress">
-                                                <div class="progress-bar" role="progressbar"
-                                                     style="width: {{$average}}%"
-                                                     aria-valuenow="{{$average}}" aria-valuemin="0" aria-valuemax="100">
+                                                <span class="review-count">{{$good_count}}</span>
+                                            </li>
+                                            <li>
+                                                <span class="review-name">{{translate('avarage')}}</span>
+                                                @php($average_count=$service->reviews->where('is_active', 1)->where('review_rating',3)->count())
+                                                @php($average=(divnum($average_count,$total_review_count))*100)
+                                                <div class="progress">
+                                                    <div class="progress-bar" role="progressbar"
+                                                         style="width: {{$average}}%"
+                                                         aria-valuenow="{{$average}}" aria-valuemin="0" aria-valuemax="100">
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <span class="review-count">{{$average_count}}</span>
-                                        </li>
-                                        <li>
-                                            <span class="review-name">{{translate('below_avarage')}}</span>
-                                            @php($below_average_count=$service->reviews->where('is_active', 1)->where('review_rating',2)->count())
-                                            @php($below_average=(divnum($below_average_count,$total_review_count))*100)
-                                            <div class="progress">
-                                                <div class="progress-bar" role="progressbar"
-                                                     style="width: {{$below_average}}%"
-                                                     aria-valuenow="{{$below_average}}" aria-valuemin="0"
-                                                     aria-valuemax="100">
+                                                <span class="review-count">{{$average_count}}</span>
+                                            </li>
+                                            <li>
+                                                <span class="review-name">{{translate('below_avarage')}}</span>
+                                                @php($below_average_count=$service->reviews->where('is_active', 1)->where('review_rating',2)->count())
+                                                @php($below_average=(divnum($below_average_count,$total_review_count))*100)
+                                                <div class="progress">
+                                                    <div class="progress-bar" role="progressbar"
+                                                         style="width: {{$below_average}}%"
+                                                         aria-valuenow="{{$below_average}}" aria-valuemin="0"
+                                                         aria-valuemax="100">
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <span class="review-count">{{$below_average_count}}</span>
-                                        </li>
-                                        <li>
-                                            <span class="review-name">{{translate('poor')}}</span>
-                                            @php($poor_count=$service->reviews->where('is_active', 1)->where('review_rating',1)->count())
-                                            @php($poor=(divnum($poor_count,$total_review_count))*100)
-                                            <div class="progress">
-                                                <div class="progress-bar" role="progressbar" style="width: {{$poor}}%"
-                                                     aria-valuenow="{{$poor}}" aria-valuemin="0" aria-valuemax="100">
+                                                <span class="review-count">{{$below_average_count}}</span>
+                                            </li>
+                                            <li>
+                                                <span class="review-name">{{translate('poor')}}</span>
+                                                @php($poor_count=$service->reviews->where('is_active', 1)->where('review_rating',1)->count())
+                                                @php($poor=(divnum($poor_count,$total_review_count))*100)
+                                                <div class="progress">
+                                                    <div class="progress-bar" role="progressbar" style="width: {{$poor}}%"
+                                                         aria-valuenow="{{$poor}}" aria-valuemin="0" aria-valuemax="100">
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <span class="review-count">{{$poor_count}}</span>
-                                        </li>
-                                    </ul>
+                                                <span class="review-count">{{$poor_count}}</span>
+                                            </li>
+                                        </ul>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    @endif
 
                     <div class="d-flex justify-content-end border-bottom pb-2 mb-10">
                         <div class="d-flex gap-2 fw-medium">
@@ -307,25 +309,20 @@
                     <div class="card">
                         <div class="card-body">
                             <div class="data-table-top d-flex flex-wrap gap-10 justify-content-between">
-                                <form action="{{url()->current()}}" class="search-form search-form_style-two"
-                                      method="POST">
-                                    @csrf
-                                    <div class="input-group search-form__input_group">
-                                            <span class="search-form__icon">
-                                                <span class="material-icons">search</span>
-                                            </span>
-                                        <input type="search" class="theme-input-style search-form__input"
-                                               value="{{$search}}" name="review_search"
-                                               placeholder="{{translate('search_review_id')}}">
-                                    </div>
-                                    <button type="submit" class="btn btn--primary">
-                                        {{translate('search')}}
-                                    </button>
-                                </form>
+                                <div class="title-here"></div>
                                 <div class="d-flex flex-wrap align-items-center gap-3">
+                                    <form action="{{url()->current()}}" class="d-flex align-items-center gap-0 border rounded" method="POST">
+                                        @csrf
+                                        <input type="search" class="theme-input-style border-0 rounded block-size-36" name="review_search" value="{{$search}}" placeholder="{{translate('search_review_id')}}">
+                                        <button type="submit" class="bg-light border-0 px-2 block-size-36 rounded-end d-flex align-items-center justify-content-center">
+                                            <span class="material-symbols-outlined fz-20 opacity-75">
+                                                search
+                                            </span>
+                                        </button>
+                                    </form>
                                     <div class="dropdown">
                                         <button type="button"
-                                                class="btn btn--secondary text-capitalize dropdown-toggle"
+                                                class="btn btn--secondary rounded text-capitalize dropdown-toggle"
                                                 data-bs-toggle="dropdown">
                                             <span class="material-icons">file_download</span> {{translate('download')}}
                                         </button>
@@ -354,7 +351,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                    @foreach($reviews as $key => $review)
+                                    @forelse($reviews as $key => $review)
                                         <tr>
                                             <td>{{$key+$reviews?->firstItem()}}</td>
                                             <td>{{ $review->readable_id == 0 ? 'N/A' : $review->readable_id }}</td>
@@ -397,15 +394,25 @@
                                                             data-service_img="{{$review->service->cover_image_full_path}}"
                                                             data-review="{{$review->review_comment ?? translate('No review yet')}}"
                                                             data-review_reply="{{$review->reviewReply?->reply ?? translate('No reply yet')}}"
-                                                            data-variant_key="{{ $review->booking?->detail[0]?->variant_key }}"
-                                                    >
+                                                            data-variant_key="{{ $review->booking?->detail[0]?->variant_key }}">
                                                         <span class="material-icons">visibility</span>
                                                     </button>
                                                 </div>
                                                 @endif
                                             </td>
                                         </tr>
-                                    @endforeach
+                                    @empty
+                                    <tr>
+                                        <td colspan="12">
+                                            <div class="review-empty-state py-5">
+                                                <div class="d-flex flex-column align-items-center justify-content-center py-5 gap-2">
+                                                    <img src="{{asset('public/assets/admin-module/img/review-empty-state.svg')}}" alt="No data">
+                                                    <h5 class="m-0 text-muted opacity-50">{{translate('You don’t have any reviews yet.')}}</h5>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    @endforelse
                                     </tbody>
                                 </table>
                             </div>

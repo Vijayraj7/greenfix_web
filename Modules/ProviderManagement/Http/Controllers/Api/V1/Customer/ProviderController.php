@@ -139,12 +139,12 @@ class ProviderController extends Controller
             $query->where('booking_status', 'completed');
         }, 'subscribed_services'])->find($request['id']);
 
+        if (!isset($provider)) return response()->json(response_formatter(DEFAULT_404), 404);
+
         $provider['is_favorite'] = $this->favoriteProvider
             ->where('customer_user_id', $this->customer_user_id)
             ->where('provider_id', $provider->id)
             ->exists() ? 1 : 0;
-
-        if (!isset($provider)) return response()->json(response_formatter(DEFAULT_404), 404);
 
         $review = $this->review
             ->with('customer', 'reviewReply')

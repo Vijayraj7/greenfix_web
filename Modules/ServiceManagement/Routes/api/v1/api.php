@@ -60,9 +60,10 @@ Route::group(['prefix' => 'customer', 'as' => 'customer.', 'namespace' => 'Api\V
         Route::get('trending', [CustomerServiceController::class, 'trending']);
         Route::get('recently-viewed', [CustomerServiceController::class, 'recentlyViewed'])->middleware('auth:api');
         Route::get('offers', [CustomerServiceController::class, 'offers']);
-        Route::get('detail/{id}', [CustomerServiceController::class, 'show']);
+        Route::get('detail/{slug}', [CustomerServiceController::class, 'show']);
         Route::get('review/{service_id}', [CustomerServiceController::class, 'review']);
-        Route::get('sub-category/{sub_category_id}', [CustomerServiceController::class, 'servicesBySubcategory']);
+        //Route::get('sub-category/{sub_category_id}', [CustomerServiceController::class, 'servicesBySubcategory']);
+        Route::get('sub-category/{slug}', [CustomerServiceController::class, 'servicesBySubcategory']);
 
         Route::post('area-availability', [CustomerServiceController::class, 'serviceAreaAvailability']);
 

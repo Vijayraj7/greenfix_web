@@ -57,6 +57,9 @@ class SubscriptionPackageController extends Controller
      */
     public function details(): Renderable
     {
+        //update setup guideline data
+        updateSetupGuidelineTutorialsOptions(auth()->user()->id,'business_plan', 'web');
+
         $provider = $this->provider->where('user_id', auth()->user()->id)->first();
         $providerId = $provider->id;
         $commission = $provider->commission_status == 1 ? $provider->commission_percentage : (business_config('default_commission', 'business_information'))->live_values;

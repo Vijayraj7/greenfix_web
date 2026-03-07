@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Str;
 use Modules\BookingModule\Entities\BookingDetail;
 use Modules\BusinessSettingsModule\Entities\Storage;
 use Modules\BusinessSettingsModule\Entities\Translation;
@@ -31,9 +32,10 @@ class Service extends Model
         'is_active' => 'integer',
         'rating_count' => 'integer',
         'avg_rating' => 'float',
+        'slug'      => 'string',
     ];
 
-    protected $fillable = [];
+    protected $fillable = ['slug'];
 
     protected $appends = ['thumbnail_full_path', 'cover_image_full_path'];
 
@@ -236,6 +238,22 @@ class Service extends Model
         return getSingleImageFullPath(imagePath: $imagePath, s3Storage: $s3Storage, defaultPath: $defaultPath);
     }
 
+    protected static function generateUniqueSlug($name, $ignoreId = null)
+    {
+        $slug = Str::slug($name);
+        $original = $slug;
+        $count = 1;
+
+        while (
+        static::where('slug', $slug)
+            ->when($ignoreId, fn ($q) => $q->where('id', '!=', $ignoreId))
+            ->exists()
+        ) {
+            $slug = $original . '-' . $count++;
+        }
+
+        return $slug;
+    }
 
     protected static function booted()
     {
@@ -267,6 +285,18 @@ class Service extends Model
             $builder->with(['translations' => function ($query) {
                 return $query->where('locale', app()->getLocale());
             }]);
+        });
+
+        static::creating(function ($category) {
+            if (empty($category->slug)) {
+                $category->slug = static::generateUniqueSlug($category->name);
+            }
+        });
+
+        static::updating(function ($category) {
+            if ($category->isDirty('name') || empty($category->slug)) {
+                $category->slug = static::generateUniqueSlug($category->name, $category->id);
+            }
         });
     }
 }

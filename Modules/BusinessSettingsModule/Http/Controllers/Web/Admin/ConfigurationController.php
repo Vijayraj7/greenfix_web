@@ -942,6 +942,9 @@ class ConfigurationController extends Controller
             return view('businesssettingsmodule::admin.configurations.third-party.firebase', compact('webPage', 'data'));
         }
         elseif ($webPage == 'payment_config'){
+            //update setup guideline data
+            updateSetupGuidelineTutorialsOptions(auth()->user()->id,'digital_payment', 'web');
+
             return view('businesssettingsmodule::admin.configurations.third-party.payment.index', compact('webPage', 'data', 'publishedStatus', 'paymentUrl'));
         }
         else{
@@ -1042,6 +1045,7 @@ class ConfigurationController extends Controller
 
         if ($data['party_name'] == 'email_config')
         {
+
             $processedData = [];
             $processedData[] = array_merge(Arr::except($data, 'status'), ['party_name' => 'email_config']);
             $processedData[] = $data['status'] ?? 1;
@@ -1060,6 +1064,9 @@ class ConfigurationController extends Controller
                 );
             }
 
+            //update setup guideline data
+            updateSetupGuidelineTutorialsOptions(auth()->user()->id,'email_configuration', 'web');
+
             return response()->json(response_formatter(constant: DEFAULT_UPDATE_200), 200);
         }
 
@@ -1073,6 +1080,9 @@ class ConfigurationController extends Controller
         if ($data['party_name'] == 'firebase')
         {
             self::firebaseMessageConfigFileGen();
+
+            //update setup guideline data
+            updateSetupGuidelineTutorialsOptions(auth()->user()->id,'notification_configuration', 'web');
         }
         $this->businessSetting->updateOrCreate(
             ['key_name' => $processedData['party_name'], 'settings_type' => 'third_party'],
@@ -1085,6 +1095,11 @@ class ConfigurationController extends Controller
                 'is_active' => $processedData['status'] ?? 1,
             ]
         );
+
+        if ($data['party_name'] == 'google_map'){
+            //update setup guideline data
+            updateSetupGuidelineTutorialsOptions(auth()->user()->id,'google_map_configuration', 'web');
+        }
 
         return response()->json(response_formatter(constant: DEFAULT_UPDATE_200), 200);
     }

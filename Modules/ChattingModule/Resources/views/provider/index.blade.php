@@ -32,8 +32,8 @@
                             </div>
                         </div>
 
-                        <div class="d-flex align-items-start justify-content-between gap-2 px-3">
-                            <div class="media align-items-center gap-3 mb-4">
+                        <div class="d-flex align-items-start justify-content-between gap-2 px-3 bg-light py-3 mb-2">
+                            <div class="media align-items-center gap-3 w-100">
                                 <div class="position-relative">
                                     <img class="avatar rounded-circle"
                                          src="{{auth()->user()->provider->logo_full_path}}"
@@ -41,19 +41,26 @@
                                     <span class="avatar-status bg-success"></span>
                                 </div>
                                 <div class="media-body">
-                                    <h5 class="profile-name">{{auth()->user()->provider->company_name}}</h5>
+                                    <div class="d-flex align-items-center gap-1 justify-content-between w-100">
+                                        <h5 class="profile-name line-limit-1 m-0">{{auth()->user()->provider->company_name}}</h5>
+                                        <div class="badge badge-primary fs-10 rounded-pill py-1 px-2">
+                                            Provider
+                                        </div>
+                                    </div>
+                                    <p class="fs-12 text--grey mb-0 mt-1 line-limit-1">Hello! Here to help you</p>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="d-flex justify-content-center mx-lg-4 mb-4">
+                        <div class="d-flex justify-content-start mx-lg-4 mb-4">
                             <ul class="nav nav--tabs border-bottom">
                                 <li class="nav-item">
                                     <a class="nav-link {{request()->getQueryString() == 'user_type=super_admin' ? 'active':''}}"
                                        href="{{url()->current()}}?user_type=super_admin">
                                         {{translate('admin')}}
                                     </a>
-                                </li>                                <li class="nav-item">
+                                </li>
+                                <li class="nav-item">
                                     <a class="nav-link {{request()->getQueryString() == 'user_type=customer' ? 'active':''}}"
                                        href="{{url()->current()}}?user_type=customer">
                                         {{translate('customer')}}
@@ -71,13 +78,13 @@
                         <div class="inbox_people">
 
                             <div class="inbox_chat d-flex flex-column mt-1">
-                                @foreach($chatList as $chat)
+                                @forelse($chatList as $chat)
                                     @php($from_user=$chat->channelUsers->where('user_id','!=',auth()->id())->first())
                                     <div class="chat_list chat-list-class {{$chat->is_read==0?'active':''}}"
                                          id="chat-{{$chat->id}}"
                                          data-route="{{route('provider.chat.ajax-conversation',['channel_id'=>$chat->id,'offset'=>1])}}"
                                          data-chat="{{$chat->id}}">
-                                        <div class="chat_people media gap-10" id="chat_people">
+                                        <div class="chat_people media w-100 gap-10" id="chat_people">
                                             <div class="position-relative">
                                                 <img
                                                     @if(isset($from_user->user) && $from_user->user->user_type == 'super-admin')
@@ -103,6 +110,12 @@
                                                     <span
                                                         class="fz-12">{{isset($from_user->user)?$from_user->user->phone:''}}</span>
                                                 @endif
+{{--                                                <div class="d-flex gap-2 align-items-center justify-content-between w-100">--}}
+{{--                                                    <div class="text-dark fs-12 line-limit-1">I need a emergency serv</div>--}}
+{{--                                                    <div class="bg-info d-flex align-items-center min-w-18 min-h-18 justify-content-center text-white radius-50 px-1 fz-12">--}}
+{{--                                                        2--}}
+{{--                                                    </div>--}}
+{{--                                                </div>--}}
                                             </div>
                                         </div>
                                         @if($chat->is_read==0)
@@ -112,8 +125,14 @@
                                             </div>
                                         @endif
                                     </div>
-                                @endforeach
+                                @empty
+                                    <h4 class="d-flex flex-column text--grey fw-medium opacity-10 align-items-center justify-content-center my-auto gap-3 p-3">
+                                        <img width="46" src="{{asset('/public/assets/admin-module/img/customer-no-data.png')}}" class="svg" alt="">
+                                        {{translate('No Data Found')}}
+                                    </h4>
+                                @endforelse
                             </div>
+
                         </div>
                     </div>
                 </div>
@@ -127,9 +146,9 @@
                         </button>
                     </div>
                     <div class="card card-chat justify-content-between" id="set-conversation">
-                        <h4 class="d-flex align-items-center justify-content-center my-auto gap-2 p-3">
-                            <span class="material-icons">chat</span>
-                            {{translate('start_conversation')}}
+                        <h4 class="d-flex flex-column text--grey fw-medium opacity-10 align-items-center justify-content-center my-auto gap-3 p-3">
+                            <img width="46" src="{{asset('/public/assets/admin-module/img/no-datas.png')}}" class="svg" alt="">
+                            {{translate('You haven’t any conversation yet')}}
                         </h4>
                     </div>
                 </div>

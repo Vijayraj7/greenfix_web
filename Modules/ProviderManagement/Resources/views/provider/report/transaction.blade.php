@@ -85,61 +85,77 @@
 
                     <div class="card mt-3">
                         <div class="card-body">
-                            <div class="d-flex flex-wrap gap-3 mb-4">
-                                <div class="statistics-card statistics-card__total-orders border flex-grow-1">
-                                    <h2>{{with_currency_symbol($account_info->received_balance + $account_info->total_withdrawn)}}</h2>
-                                    <h3>{{translate('provider_Balance')}}</h3>
-                                    <div class="absolute-img" data-bs-toggle="tooltip"
-                                         data-bs-title="{{translate('provider balance means total Earning of booking')}}">
-                                        <img src="{{asset('public/assets/provider-module')}}/img/icons/info.svg"
-                                             class="svg" alt="">
+                            <div class="tabs-slide-wrap position-relative">
+                                <div class="tabs-inner d-flex gap-3 flex-nowrap text-nowrap">
+                                    <div class="statistics-card statistics-card__total-orders border tabs-slide_items">
+                                        <h2>{{with_currency_symbol($account_info->received_balance + $account_info->total_withdrawn)}}</h2>
+                                        <h3>{{translate('provider_Balance')}}</h3>
+                                        <div class="absolute-img" data-bs-toggle="tooltip"
+                                             data-bs-title="{{translate('provider balance means total Earning of booking')}}">
+                                            <img src="{{asset('public/assets/provider-module')}}/img/icons/info.svg"
+                                                 class="svg" alt="">
+                                        </div>
+                                    </div>
+    
+                                    <div class="statistics-card border tabs-slide_items">
+                                        <h2>{{with_currency_symbol(($account_info->balance_pending??0))}}</h2>
+                                        <h3>{{translate('Pending_Balance')}}</h3>
+                                        <div class="absolute-img" data-bs-toggle="tooltip"
+                                             data-bs-title="{{translate('Pending balance means the amount requested for withdraw to admin')}}">
+                                            <img src="{{asset('public/assets/provider-module')}}/img/icons/info.svg"
+                                                 class="svg" alt="">
+                                        </div>
+                                    </div>
+    
+                                    <div class="statistics-card statistics-card__subscribed-providers border tabs-slide_items">
+                                        <h2>{{with_currency_symbol($account_info->total_withdrawn)}}</h2>
+                                        {{-- <h3>{{translate('Already_withdrawn')}}</h3> --}}
+                                        <h3>{{translate('Commission_Given')}}</h3>
+                                        <div class="absolute-img" data-bs-toggle="tooltip"
+                                             data-bs-title="{{translate('Total withdrawn means the amount provider has already withdrawn from admin which was got from digitally paid booking')}}">
+                                            <img src="{{asset('public/assets/provider-module')}}/img/icons/info.svg"
+                                                 class="svg" alt="">
+                                        </div>
+                                    </div>
+    
+                                    <div class="statistics-card statistics-card__canceled border tabs-slide_items">
+                                        <h2>{{with_currency_symbol($account_info->account_payable??0)}}</h2>
+                                        <h3>{{translate('Account_Payable')}}</h3>
+                                        <div class="absolute-img" data-bs-toggle="tooltip"
+                                             data-bs-title="{{translate('Account payable means the admin commission for CAS bookings that is yet to pay')}}">
+                                            <img src="{{asset('public/assets/provider-module')}}/img/icons/info.svg"
+                                                 class="svg" alt="">
+                                        </div>
+                                    </div>
+    
+                                    <div class="statistics-card statistics-card__ongoing border tabs-slide_items">
+                                        <h2>{{with_currency_symbol($account_info->account_receivable??0)}}</h2>
+                                        <h3>{{translate('Account_Receivable')}}</h3>
+                                        <div class="absolute-img" data-bs-toggle="tooltip"
+                                             data-bs-title="{{translate('Account receivable means booking earning by digitally paid bookings that is yet to collect from admin')}}">
+                                            <img src="{{asset('public/assets/provider-module')}}/img/icons/info.svg"
+                                                 class="svg" alt="">
+                                        </div>
                                     </div>
                                 </div>
-
-                                <div class="statistics-card border flex-grow-1">
-                                    <h2>{{with_currency_symbol(($account_info->balance_pending??0))}}</h2>
-                                    <h3>{{translate('Pending_Balance')}}</h3>
-                                    <div class="absolute-img" data-bs-toggle="tooltip"
-                                         data-bs-title="{{translate('Pending balance means the amount requested for withdraw to admin')}}">
-                                        <img src="{{asset('public/assets/provider-module')}}/img/icons/info.svg"
-                                             class="svg" alt="">
+                                <div class="arrow-area">
+                                    <div class="button-prev align-items-center">
+                                        <button type="button"
+                                            class="btn btn-click-prev mr-auto border-0 btn-primary rounded-circle p-2 d-center">                                            
+                                            <span class="material-symbols-outlined fs-5 lh-1 m-0">chevron_left</span>                                                                                        
+                                        </button>
                                     </div>
-                                </div>
-
-                                <div class="statistics-card statistics-card__subscribed-providers border flex-grow-1">
-                                    <h2>{{with_currency_symbol($account_info->total_withdrawn)}}</h2>
-                                    {{-- <h3>{{translate('Already_withdrawn')}}</h3> --}}
-                                    <h3>{{translate('Commission_Given')}}</h3>
-                                    <div class="absolute-img" data-bs-toggle="tooltip"
-                                         data-bs-title="{{translate('Total withdrawn means the amount provider has already withdrawn from admin which was got from digitally paid booking')}}">
-                                        <img src="{{asset('public/assets/provider-module')}}/img/icons/info.svg"
-                                             class="svg" alt="">
-                                    </div>
-                                </div>
-
-                                <div class="statistics-card statistics-card__canceled border flex-grow-1">
-                                    <h2>{{with_currency_symbol($account_info->account_payable??0)}}</h2>
-                                    <h3>{{translate('Account_Payable')}}</h3>
-                                    <div class="absolute-img" data-bs-toggle="tooltip"
-                                         data-bs-title="{{translate('Account payable means the admin commission for CAS bookings that is yet to pay')}}">
-                                        <img src="{{asset('public/assets/provider-module')}}/img/icons/info.svg"
-                                             class="svg" alt="">
-                                    </div>
-                                </div>
-
-                                <div class="statistics-card statistics-card__ongoing border flex-grow-1">
-                                    <h2>{{with_currency_symbol($account_info->account_receivable??0)}}</h2>
-                                    <h3>{{translate('Account_Receivable')}}</h3>
-                                    <div class="absolute-img" data-bs-toggle="tooltip"
-                                         data-bs-title="{{translate('Account receivable means booking earning by digitally paid bookings that is yet to collect from admin')}}">
-                                        <img src="{{asset('public/assets/provider-module')}}/img/icons/info.svg"
-                                             class="svg" alt="">
+                                    <div class="button-next align-items-center">
+                                        <button type="button"
+                                            class="btn btn-click-next ms-auto border-0 btn-primary rounded-circle p-2 d-center">
+                                            <span class="material-symbols-outlined fs-5 lh-1 m-0">chevron_right</span> 
+                                        </button>
                                     </div>
                                 </div>
                             </div>
 
                             <div
-                                class="d-flex flex-wrap justify-content-between align-items-center border-bottom mx-lg-4 mb-10 gap-3">
+                                class="d-flex flex-wrap justify-content-between align-items-center border-bottom mx-lg-4 mb-10 gap-3 mt-4">
                                 <ul class="nav nav--tabs">
                                     <li class="nav-item">
                                         <a class="nav-link {{!isset($queryParams['transaction_type']) || $queryParams['transaction_type']=='all'?'active':''}}"

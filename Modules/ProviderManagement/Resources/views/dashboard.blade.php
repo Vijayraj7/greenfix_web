@@ -145,6 +145,14 @@
                                 @endif
                                 <div class="line"></div>
                             </div>
+                            @if(count($data[6]['recent_transactions']) < 1)
+                                <div class="d-flex flex-column justify-content-center align-items-center height-80p w-100">
+                                    <div class="recent-transaction-no-data text-center">
+                                        <img src="{{ asset('public/assets/admin-module/img/icons/no-transaction.svg') }}" alt=""> <br>
+                                        <p class="fs-16 text-dark-icon">No Recent Transactions</p>
+                                    </div>
+                                </div>
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -402,133 +410,7 @@
             </div>
         </div>
     </div>
-    <!-- Guidline Offcanvas Btn -->
-    {{-- <div class="d-flex w-50px h-50px gap-2 bg-white position-fixed end-0 translate-middle-y pointer shadow view-guideline-btn flex-column align-items-center justify-content-center"
-        data-bs-toggle="offcanvas" data-bs-target="#offcanvasSetupGuide">
-        <img src="{{asset('public/assets/admin-module/img/uit_step-forward.png')}}" alt="">
-    </div> --}}
 
-
-    <!-- Guidline Button -->
-{{--    <div class="setup-guide">--}}
-{{--        <div--}}
-{{--            class="setup-guide__button d-flex gap-2 justify-content-between align-items-center bg-primary text-white p-3 position-relative rounded pointer shadow"--}}
-{{--            data-bs-toggle="modal" data-bs-target="#guideModal">--}}
-{{--            <span--}}
-{{--                class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger border border-3 fs-12 fw-semibold text-absolute-white p-1 border w-max-content">--}}
-{{--                04--}}
-{{--            </span>--}}
-{{--            <div class="d-flex gap-2 align-items-center font-weight-bold text-absolute-white">--}}
-{{--                <img width="20" src="{{asset('public/assets/admin-module/img/setup_guide.png')}}" alt="">--}}
-{{--                <span class="d-none d-lg-flex">{{ translate('Setup_Guide') }}</span>--}}
-{{--            </div>--}}
-{{--            <div class="d-none d-lg-flex text-white">--}}
-{{--                <img width="20" src="{{asset('public/assets/admin-module/img/comment-alt-dots.png')}}" alt="">--}}
-{{--            </div>--}}
-{{--        </div>--}}
-{{--    </div>--}}
-    <!-- Guidline Modal -->
-    <div class="modal fade" id="guideModal" tabindex="-1" aria-labelledby="guideModal" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-end" style="max-width: 400px">
-            <div class="modal-content modal-content_cont rounded-3 overflow-visible">
-                <div class="modal-header justify-content-between p-xxl-4 p-3 bg-light rounded border-0 gap-3">
-                    <div class="">
-                        <h3 class="mb-1">{{ translate('Set up and take bookings.') }}</h3>
-                        <p>{{ translate('Set up and start managing your business with ease.') }}</p>
-                    </div>
-
-                    <div class="progress-pie-chart">
-                        <div class="ppc-progress">
-                            <div class="ppc-progress-fill"></div>
-                        </div>
-                        <div class="ppc-percents">
-                            <div class="pcc-percents-wrapper">
-                                12<span class="fs-12 fw-bold text-dark">%</span>
-                            </div>
-                        </div>
-                    </div>
-                    <button type="button" data-bs-dismiss="modal" aria-label="Close"
-                            class="close border-0 bg-white rounded-circle d-flex align-items-center justify-content-center w-30 h-30 guideline-close m-2 p-1">
-                        <span class="material-symbols-outlined position-relative top-01">close</span>
-                    </button>
-                </div>
-
-                <div class="modal-body">
-                   <div class="modal-instruction-content  position-absolute top-0">
-                        <img class="mb-3" src="{{asset('public/assets/admin-module/img/modal-arrow.svg') }}" alt="">
-                        <h3 class="fs-28 max-w-250 text-white ms-5 text-start">
-                            {{ translate('Now Subscribe') }} <br> Service
-                        </h3>
-                    </div>
-                    <div class="d-flex flex-column gap-3 overflow-y-auto" style="max-height: 340px;">
-                        <div class="p-20 bg-light rounded">
-                            <div class="d-flex align-items-center gap-2">
-                                <div class="d-flex gap-1 align-items-center">
-                                    <input class="mb-1" type="checkbox" name="" id="Information">
-                                    <label class="user-select-none flex-grow-1" for="Information">Business Information</label>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="p-20 bg-light rounded">
-                            <div class="d-flex align-items-center gap-2">
-                                <div class="d-flex gap-1 align-items-center">
-                                    <input class="mb-1" type="checkbox" name="" id="Service">
-                                    <label class="user-select-none flex-grow-1" for="Service">Subscribe Service</label>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="p-20 bg-light rounded">
-                            <div class="d-flex align-items-center gap-2">
-                                <div class="d-flex gap-1 align-items-center">
-                                    <input class="mb-1" type="checkbox" name="" id="Availability">
-                                    <label class="user-select-none flex-grow-1" for="Availability">Service Availability & Bookings</label>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="p-20 bg-light rounded">
-                            <div class="d-flex align-items-center gap-2">
-                                <div class="d-flex gap-1 align-items-center">
-                                    <input class="mb-1" type="checkbox" name="" id="Payment">
-                                    <label class="user-select-none flex-grow-1" for="Payment">Payment Information</label>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="p-20 bg-light rounded">
-                            <div class="d-flex align-items-center gap-2">
-                                <div class="d-flex gap-1 align-items-center">
-                                    <input class="mb-1" type="checkbox" name="" id="Payment">
-                                    <label class="user-select-none flex-grow-1" for="Payment">Payment Information</label>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="p-20 bg-light rounded">
-                            <div class="d-flex align-items-center gap-2">
-                                <div class="d-flex gap-1 align-items-center">
-                                    <input class="mb-1" type="checkbox" name="" id="Payment">
-                                    <label class="user-select-none flex-grow-1" for="Payment">Payment Information</label>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="p-20 bg-light rounded">
-                            <div class="d-flex align-items-center gap-2">
-                                <div class="d-flex gap-1 align-items-center">
-                                    <input class="mb-1" type="checkbox" name="" id="Payment">
-                                    <label class="user-select-none flex-grow-1" for="Payment">Payment Information</label>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div data-bs-dismiss="modal" aria-label="Close" class="">
-                        <a class="btn btn--primary rounded px-3 d-flex align-items-center gap-1 btn-sm position-absolute end-40 bottom-20" href="#0">
-                            {{ translate('Lets_Start') }}
-                            <span class="material-symbols-outlined">arrow_right_alt</span>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 @endsection
 
 @push('script')

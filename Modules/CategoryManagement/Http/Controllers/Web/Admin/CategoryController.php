@@ -251,14 +251,17 @@ class CategoryController extends Controller
         if (!$category) {
             return response()->json(response_formatter(CATEGORY_204), 204);
         }
+
         $category->name = $request->name[array_search('default', $request->lang)];
+
         if ($request->has('image')) {
             $category->image = file_uploader('category/', APPLICATION_IMAGE_FORMAT, $request->file('image'), $category->image);
         }
+
         $category->parent_id = 0;
         $category->position = 1;
         $category->description = null;
-        $category->save();
+        $category->update();
 
         $category->zones()->sync($request->zone_ids);
 

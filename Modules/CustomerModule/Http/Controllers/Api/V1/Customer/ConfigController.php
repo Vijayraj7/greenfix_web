@@ -19,7 +19,6 @@ use Modules\PaymentModule\Entities\Setting;
 use Modules\ServiceManagement\Entities\Service;
 use Modules\UserManagement\Entities\User;
 use Modules\ZoneManagement\Entities\Zone;
-use Stevebauman\Location\Facades\Location;
 
 class ConfigController extends Controller
 {
@@ -41,8 +40,6 @@ class ConfigController extends Controller
      */
     public function configuration(Request $request): JsonResponse
     {
-        $location = Location::get($request->ip());
-
         $playstore = business_config('app_url_playstore', 'landing_button_and_links');
         $appstore = business_config('app_url_appstore', 'landing_button_and_links');
 
@@ -87,8 +84,6 @@ class ConfigController extends Controller
 
         $errorLogs = ErrorLog::where('redirect_url', '!=', null)->get();
 
-        $location = Location::get($request->ip());
-
         $loginOptionsValue = LoginSetup::where(['key' => 'login_options'])?->first()?->value;
         $loginOptions = json_decode($loginOptionsValue);
 
@@ -126,8 +121,8 @@ class ConfigController extends Controller
 
         return response()->json(response_formatter(DEFAULT_200, [
             'default_location' => [
-                'latitude' => data_get($location, 'latitude', ''),
-                'longitude' => data_get($location, 'longitude', '')
+                'latitude' => (business_config('address_latitude', 'business_information'))->live_values ?? 23.811842872190,
+                'longitude' => (business_config('address_longitude', 'business_information'))->live_values ?? 90.66504678008192
             ],
             'maintenance' => $this->checkMaintenanceMode(),
             'business_name' => (business_config('business_name', 'business_information'))->live_values ?? null,

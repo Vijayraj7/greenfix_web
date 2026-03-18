@@ -469,8 +469,19 @@ class ServicemanController extends Controller
      */
     public function changeLanguage(Request $request): JsonResponse
     {
-        if (auth('api')->user()){
-            $serviceman = $this->employee::find(auth('api')->user()->id);
+        $authenticatedUser = null;
+        $bearerToken = $request->bearerToken();
+
+        if ($bearerToken && strtolower($bearerToken) !== 'null') {
+            try {
+                $authenticatedUser = auth('api')->user();
+            } catch (\Throwable $exception) {
+                $authenticatedUser = null;
+            }
+        }
+
+        if ($authenticatedUser){
+            $serviceman = $this->employee::find($authenticatedUser->id);
             $serviceman->current_language_key = $request->header('X-localization') ?? 'en';
             $serviceman->save();
             return response()->json(response_formatter(DEFAULT_200), 200);

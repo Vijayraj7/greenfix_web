@@ -82,22 +82,27 @@
                     <div class="card">
                         <div class="card-body">
                             <div class="data-table-top d-flex flex-wrap gap-10 justify-content-between">
-                                <h4 class="m-0">Provider List</h4>
+                                <form action="{{url()->current()}}?status={{$status}}"
+                                      class="search-form search-form_style-two"
+                                      method="POST">
+                                    @csrf
+                                    <div class="input-group search-form__input_group">
+                                            <span class="search-form__icon">
+                                                <span class="material-icons">search</span>
+                                            </span>
+                                        <input type="search" class="theme-input-style search-form__input"
+                                               value="{{$search}}" name="search"
+                                               placeholder="{{translate('search_here')}}">
+                                    </div>
+                                    <button type="submit"
+                                            class="btn btn--primary">{{translate('search')}}</button>
+                                </form>
 
                                 <div class="d-flex flex-wrap align-items-center gap-3">
-                                    <form action="{{url()->current()}}?status={{$status}}" class="d-flex align-items-center gap-0 border rounded" method="POST">
-                                        @csrf
-                                        <input type="search" class="theme-input-style border-0 rounded block-size-36" name="search" value="{{$search}}" placeholder="{{translate('search_here')}}">
-                                        <button type="submit" class="bg-light border-0 px-2 block-size-36 rounded-end d-flex align-items-center justify-content-center">
-                                            <span class="material-symbols-outlined fz-20 opacity-75">
-                                                search
-                                            </span>
-                                        </button>
-                                    </form>
                                     @can('provider_export')
                                         <div class="dropdown">
                                             <button type="button"
-                                                    class="btn rounded btn--secondary text-capitalize dropdown-toggle"
+                                                    class="btn btn--secondary text-capitalize dropdown-toggle"
                                                     data-bs-toggle="dropdown">
                                                 <span
                                                     class="material-icons">file_download</span> {{translate('download')}}
@@ -120,9 +125,9 @@
                                     <tr>
                                         <th>{{translate('Sl')}}</th>
                                         <th>{{translate('Provider')}}</th>
-                                        <th class="min-w-120">{{translate('Contact_Info')}}</th>
-                                        <th class="min-w-120">{{translate('Total_Subscribed_Sub_Categories')}}</th>
-                                        <th class="min-w-120">{{translate('Total_Booking_Served')}}</th>
+                                        <th>{{translate('Contact_Info')}}</th>
+                                        <th>{{translate('Total_Subscribed_Sub_Categories')}}</th>
+                                        <th>{{translate('Total_Booking_Served')}}</th>
                                         @can('provider_manage_status')
                                             <th>{{translate('Service Availability')}}</th>
                                             <th>{{translate('Status')}}</th>
@@ -137,11 +142,11 @@
                                         $ongoingBookings = 0;
                                         $acceptedBookings = 0;
                                     @endphp
-                                    @forelse($providers as $key => $provider)
+                                    @foreach($providers as $key => $provider)
                                         <tr>
                                             <td>{{$key+$providers->firstItem()}}</td>
                                             <td>
-                                                <div class="media align-items-center gap-3 min-w-200">
+                                                <div class="media align-items-center gap-3">
                                                     <div class="avatar avatar-lg">
                                                         <a href="{{route('admin.provider.details',[$provider->id, 'web_page'=>'overview'])}}">
                                                             <img class="avatar-img radius-5" src="{{ $provider->logo_full_path }}" alt="{{ translate('provider-logo') }}">
@@ -248,18 +253,7 @@
                                                 </td>
                                             @endcan
                                         </tr>
-                                    @empty
-                                    <tr>
-                                        <td colspan="12">
-                                            <div class="review-empty-state py-5">
-                                                <div class="d-flex flex-column align-items-center justify-content-center py-5 gap-2 my-5">
-                                                    <img src="{{asset('public/assets/admin-module/img/provider-empty-state.svg')}}" alt="No data">
-                                                    <h5 class="m-0 text-muted opacity-50">{{translate('No Provider Found')}}</h5>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    @endforelse
+                                    @endforeach
                                     </tbody>
                                 </table>
                             </div>

@@ -29,100 +29,81 @@
         <div class="modal-dialog modal-dialog-centered modal-xl">
             <div class="modal-content">
                 <div class="modal-body p-lg-5">
-                    <button type="button" class="btn-close fs-10" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 
                     <div class="text-center mb-30">
                         <h3 class="mb-2 h5">{{translate('Change/Renew Subscription Plan')}}</h3>
                         <p class="text-muted">{{translate('Renew or shift your plan to get better experience!')}}</p>
                     </div>
 
-                    <div class="tabs-slide-wrap position-relative">
-                        <div class="tabs-inner d-flex gap-3 flex-nowrap text-nowrap price-box-wrap">
-                            @if($packageSubscriber && $commissionStatus)
-                                <div class="tabs-slide_items">
-                                    <div class="price-box d-flex h-100 text-wrap flex-column rounded-3 border">
-                                        <div class="price-box__top px-2 py-4 text-center mb-3">
-                                            <h5>{{translate('Commission Base')}}</h5>
-                                        </div>
-        
-                                        <div class="text-center min-h-62 d-flex flex-column justify-content-center">
-                                            <strong class="h3">{{$commission}}%</strong>
-                                        </div>
-        
-                                        <div class="px-2">
-                                            <hr>
-                                        </div>
-        
-                                        <div class="p-3 flex-grow-1 d-flex flex-column">
-                                            <div class="text-center mb-30 fs-12">
-                                                {{translate('Provider will pay ')}}{{$commission}}% {{translate('commission to Admin from each booking. You will get access of all the features and options  in provider panel , app and interaction with user.')}}
-                                            </div>
-        
-                                            <div class="d-flex justify-content-center pb-2 mt-auto">
-                                                <a href="#" class="btn btn--primary rounded text-capitalize" data-bs-toggle="modal" data-bs-target="#shiftToCommission">{{translate('Shift
-                                                to this plan')}}</a>
-                                            </div>
-                                        </div>
+                    <div class="overflow-x-auto price-box-wrap">
+                        @if($packageSubscriber && $commissionStatus)
+                            <div class="price-box d-flex flex-column rounded-3 border">
+                                <div class="price-box__top px-2 py-4 text-center mb-3">
+                                    <h5>{{translate('Commission Base')}}</h5>
+                                </div>
+
+                                <div class="text-center min-h-62 d-flex flex-column justify-content-center">
+                                    <strong class="h3">{{$commission}}%</strong>
+                                </div>
+
+                                <div class="px-2">
+                                    <hr>
+                                </div>
+
+                                <div class="p-3 flex-grow-1 d-flex flex-column">
+                                    <div class="text-center mb-30 fs-12">
+                                        {{translate('Provider will pay ')}}{{$commission}}% {{translate('commission to Admin from each booking. You will get access of all the features and options  in provider panel , app and interaction with user.')}}
+                                    </div>
+
+                                    <div class="d-flex justify-content-center pb-2 mt-auto">
+                                        <a href="#" class="btn btn--primary text-capitalize" data-bs-toggle="modal" data-bs-target="#shiftToCommission">{{translate('Shift
+                                        to this plan')}}</a>
                                     </div>
                                 </div>
-                            @endif
-                            @foreach($subscriptionPackages as $package)
-                                @php
-                                    $isMatch = $packageSubscriber?->subscription_package_id == $package->id;
-                                @endphp
-                                <div class="tabs-slide_items">
-                                    <div class="price-box d-flex text-wrap h-100 flex-column {{ $isMatch ? 'active' : '' }} rounded-3 border">
-                                        <div class="price-box__top px-2 py-4 text-center mb-3">
-                                            <h5 class="line-clamp-1">{{ $package->name }}</h5>
-                                        </div>
-        
-                                        <div class="text-center min-h-62 d-flex flex-column justify-content-center">
-                                            <strong class="h3">{{with_currency_symbol($package->price)}}</strong>
-                                            <div class="days">{{ $package->duration }} {{translate('Days')}}</div>
-                                        </div>
-        
-                                        <div class="px-2">
-                                            <hr>
-                                        </div>
-        
-                                        <div class="p-3 flex-grow-1 d-flex flex-column">
-                                            <ul class="d-flex flex-column align-items-center gap-2 p-0 fs-12 mb-30 plan-list__scrollbar">
-                                                @foreach($package->feature_list as $feature)
-                                                    <li class=""><div class="line-limit-1">{{ $feature }}</div></li>
-                                                @endforeach
-                                            </ul>
-        
-                                            <div class="d-flex justify-content-center pb-2 mt-auto">
-                                                @if($isMatch && $packageSubscriber != null)
-                                                    <a class="btn btn-warning bg-absolute-white hover-dark-absolute rounded  text-capitalize admin-renew-package" data-bs-toggle="modal" data-bs-target="#renewModal" data-id="{{ $package->id }}" data-provider="{{ $providerId }}">{{translate('Renew
-                                                    Package')}}</a>
-                                                @elseif($packageSubscriber == null)
-                                                    <a href="#" class="btn rounded  btn--primary text-capitalize admin-purchase-package" data-bs-toggle="modal" data-bs-target="#purchaseModal" data-id="{{ $package->id }}" data-provider="{{ $providerId }}">{{translate('Purchase
-                                                   to this plan')}}</a>
-                                                @else
-                                                    <a href="#" class="btn  rounded btn--primary text-capitalize admin-shift-package" data-bs-toggle="modal" data-bs-target="#shiftModal" data-id="{{ $package->id }}" data-provider="{{ $providerId }}">{{translate('Shift
-                                                   to this plan')}}</a>
-                                                @endif
-                                            </div>
-                                        </div>
+                            </div>
+                        @endif
+                        @foreach($subscriptionPackages as $package)
+                            @php
+                                $isMatch = $packageSubscriber?->subscription_package_id == $package->id;
+                            @endphp
+
+                            <div class="price-box d-flex flex-column {{ $isMatch ? 'active' : '' }} rounded-3 border">
+                                <div class="price-box__top px-2 py-4 text-center mb-3">
+                                    <h5 class="line-clamp-1">{{ $package->name }}</h5>
+                                </div>
+
+                                <div class="text-center min-h-62 d-flex flex-column justify-content-center">
+                                    <strong class="h3">{{with_currency_symbol($package->price)}}</strong>
+                                    <div class="days">{{ $package->duration }} {{translate('Days')}}</div>
+                                </div>
+
+                                <div class="px-2">
+                                    <hr>
+                                </div>
+
+                                <div class="p-3 flex-grow-1 d-flex flex-column">
+                                    <ul class="d-flex flex-column align-items-center gap-2 p-0 fs-12 mb-30">
+                                        @foreach($package->feature_list as $feature)
+                                            <li>{{ $feature }}</li>
+                                        @endforeach
+                                    </ul>
+
+                                    <div class="d-flex justify-content-center pb-2 mt-auto">
+                                        @if($isMatch && $packageSubscriber != null)
+                                            <a class="btn btn-warning text-capitalize admin-renew-package" data-bs-toggle="modal" data-bs-target="#renewModal" data-id="{{ $package->id }}" data-provider="{{ $providerId }}">{{translate('Renew
+                                            Package')}}</a>
+                                        @elseif($packageSubscriber == null)
+                                            <a href="#" class="btn btn--primary text-capitalize admin-purchase-package" data-bs-toggle="modal" data-bs-target="#purchaseModal" data-id="{{ $package->id }}" data-provider="{{ $providerId }}">{{translate('Purchase
+                                           to this plan')}}</a>
+                                        @else
+                                            <a href="#" class="btn btn--primary text-capitalize admin-shift-package" data-bs-toggle="modal" data-bs-target="#shiftModal" data-id="{{ $package->id }}" data-provider="{{ $providerId }}">{{translate('Shift
+                                           to this plan')}}</a>
+                                        @endif
                                     </div>
                                 </div>
-                            @endforeach
-                        </div>
-                        <div class="arrow-area">
-                            <div class="button-prev align-items-center">
-                                <button type="button"
-                                    class="btn btn-click-prev mr-auto border-0 btn-primary rounded-circle p-2 d-center">                                            
-                                    <span class="material-symbols-outlined fs-5 lh-1 m-0">chevron_left</span>                                                                                        
-                                </button>
                             </div>
-                            <div class="button-next align-items-center">
-                                <button type="button"
-                                    class="btn btn-click-next ms-auto border-0 btn-primary rounded-circle p-2 d-center">
-                                    <span class="material-symbols-outlined fs-5 lh-1 m-0">chevron_right</span> 
-                                </button>
-                            </div>
-                        </div>
+                        @endforeach
                     </div>
                 </div>
             </div>

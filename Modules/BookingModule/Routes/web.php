@@ -88,8 +88,5 @@ Route::group(['prefix' => 'provider', 'as' => 'provider.', 'namespace' => 'Web\P
 
         Route::post('change-service-location/{id}', [ProviderBookingController::class, 'changeServiceLocation'])->name('change-service-location');
         Route::post('repeat-change-service-location/{id}', [ProviderBookingController::class, 'repeatChangeServiceLocation'])->name('repeat.change-service-location');
-        Route::get('calendar-view', [ProviderBookingController::class, 'calendarView'])->name('calendar.view');
-        Route::get('calendar-events', [ProviderBookingController::class, 'calendarEvents'])->name('calendar.events');
-        Route::get('calendar-events/bookings', [ProviderBookingController::class, 'getCalendarBookingList'])->name('calendar.events.bookings');
     });
 });

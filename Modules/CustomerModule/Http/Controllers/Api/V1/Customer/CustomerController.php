@@ -2,7 +2,6 @@
 
 namespace Modules\CustomerModule\Http\Controllers\Api\V1\Customer;
 
-use App\CentralLogics\Helpers;
 use App\Traits\UploadSizeHelperTrait;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\JsonResponse;
@@ -10,7 +9,6 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
-use Kreait\Firebase\Factory;
 use Modules\BookingModule\Entities\Booking;
 use Modules\BusinessSettingsModule\Entities\ErrorLog;
 use Modules\SMSModule\Lib\SMS_gateway;
@@ -316,39 +314,6 @@ class CustomerController extends Controller
 
         return response()->json(response_formatter(DEFAULT_200), 200);
     }
-
-    public function fcmSubscribeToTopic(Request $request): JsonResponse|bool|string
-    {
-        $validator = Validator::make($request->all(), [
-            'token' => 'required',
-            'topic' => 'required',
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json(response_formatter(DEFAULT_400, null, error_processor($validator)), 400);
-        }
-
-        $config = business_config('push_notification', 'third_party');
-        $config = collect($config->live_values);
-
-        $serviceAccountContent = data_get($config, 'service_file_content', null);
-
-        $serviceAccount = is_array($serviceAccountContent) ? $serviceAccountContent : json_decode($serviceAccountContent, true);
-        $factory = (new Factory)->withServiceAccount($serviceAccount);
-        $messaging = $factory->createMessaging();
-
-        $token = $request->input('token');
-        $topic = $request->input('topic');
-
-        try {
-           $a = $messaging->subscribeToTopic($topic, $token);
-//            return response()->json(['message' => 'Successfully subscribed to topic '. $topic], 200);
-            return response()->json($a, 200);
-        } catch (\Exception $e) {
-            return response()->json(['error' => $e->getMessage()], 500);
-        }
-    }
-
 
 
 }

@@ -122,7 +122,7 @@
                                                           class="form-control" readonly></textarea>
                                             </div>
 
-                                            <div class="map-warper map__zone-setup dark-support rounded overflow-hidden">
+                                            <div class="map-warper dark-support rounded overflow-hidden">
                                                 <input id="pac-input" class="controls rounded search_area"
                                                        title="{{translate('search_your_location_here')}}" type="text"
                                                        placeholder="{{translate('search_here')}}"/>
@@ -130,7 +130,7 @@
                                             </div>
                                         </div>
                                         <div class="col-12">
-                                            <div class="d-flex justify-content-end gap-3 mt-30">
+                                            <div class="d-flex justify-content-end gap-20 mt-30">
                                                 <button class="btn btn--secondary" type="reset"
                                                         id="reset_btn">{{translate('reset')}}</button>
                                                 <button class="btn btn--primary"

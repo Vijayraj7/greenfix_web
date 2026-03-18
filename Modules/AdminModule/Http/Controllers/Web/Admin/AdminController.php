@@ -3,7 +3,6 @@
 namespace Modules\AdminModule\Http\Controllers\Web\Admin;
 
 use App\Traits\UploadSizeHelperTrait;
-use Carbon\Carbon;
 use Modules\AdminModule\Traits\AdminMenuWithRoutes;
 use function auth;
 use function view;
@@ -18,8 +17,11 @@ use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Contracts\View\View;
 use Brian2694\Toastr\Facades\Toastr;
+use Illuminate\Support\Facades\File;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Contracts\View\Factory;
+use Modules\PaymentModule\Entities\Bonus;
 use Modules\UserManagement\Entities\User;
 use Modules\BookingModule\Entities\Booking;
 use Illuminate\Contracts\Support\Renderable;
@@ -28,11 +30,18 @@ use Modules\ServiceManagement\Entities\Service;
 use Modules\TransactionModule\Entities\Account;
 use Illuminate\Contracts\Foundation\Application;
 use Modules\ChattingModule\Entities\ChannelList;
+use Modules\PromotionManagement\Entities\Banner;
+use Modules\PromotionManagement\Entities\Coupon;
+use Modules\CategoryManagement\Entities\Category;
 use Modules\ProviderManagement\Entities\Provider;
 use Illuminate\Auth\Access\AuthorizationException;
+use Modules\PromotionManagement\Entities\Campaign;
+use Modules\PromotionManagement\Entities\Discount;
 use Modules\TransactionModule\Entities\Transaction;
 use Modules\AdminModule\Entities\RouteSearchHistory;
+use Modules\PromotionManagement\Entities\Advertisement;
 use Modules\BookingModule\Entities\BookingDetailsAmount;
+use Modules\CustomerModule\Entities\SubscribeNewsletter;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 
@@ -116,10 +125,7 @@ class AdminController extends Controller
             ->get();
         $data[] = [
             'recent_transactions' => $recent_transactions,
-            'this_month_trx_count' => $transaction
-                ->whereYear('created_at', Carbon::now()->year)
-                ->whereMonth('created_at', Carbon::now()->month)
-                ->count()
+            'this_month_trx_count' => $transaction->count()
         ];
 
         $bookings = $this->booking->with(['detail.service' => function ($query) {
@@ -550,25 +556,5 @@ class AdminController extends Controller
                 'keyword' => '',
             ])->render()
         ]);
-    }
-
-    public function refreshSetupGuideUI(): JsonResponse
-    {
-        $setup = getSetupGuideSteps('admin_panel', auth()->user());
-
-        return response()->json([
-            'percentage' => $setup['percentage'],
-            'unchecked_keys' => collect($setup['steps'])
-                ->where('checked', false)
-                ->pluck('key')
-                ->values(),
-            'unchecked_count' => collect($setup['steps'])
-                ->where('checked', false)
-                ->count(),
-            'steps' => $setup['steps'],
-            'all_completed' => collect($setup['steps'])
-                ->every(fn ($step) => $step['checked']),
-        ]);
-
     }
 }

@@ -952,30 +952,3 @@ $ratios: (
 .mark, mark {
     padding: 1px 0px 1px 0px !important;
 }
-
-.modal .subscribe-modal-wrap{
-    background-color: transparent !important;
-    border: unset !important;
-}
-.max-w-360px{
-    max-width: 360px !important;
-}
-.text-hover-theme:hover{
-    color: var(--bs-primary) !important;
-        strong{
-        color: var(--bs-primary) !important;
-    }
-}
-.gotit-box{
-    background-color: var(--bg-box-clr3);
-    border-radius: 10px;
-    padding: 24px;
-    position: relative;
-    z-index: 1;
-}
-
-.w-h-26{
-    width: 26px;
-    min-width: 26px;
-    height: 26px;
-}

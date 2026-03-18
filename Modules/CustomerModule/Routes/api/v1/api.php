@@ -30,8 +30,6 @@ Route::group(['prefix' => 'admin', 'as'=>'admin.', 'namespace' => 'Api\V1\Admin'
 
 Route::group(['prefix' => 'customer', 'as' => 'customer.', 'namespace' => 'Api\V1\Customer'], function () {
 
-    Route::post('fcm-subscribe-to-topic', [CustomerController::class, 'fcmSubscribeToTopic']);
-
     Route::group(['prefix' => 'config'], function () {
         Route::get('/', [ConfigController::class, 'configuration']);
         Route::get('pages', [ConfigController::class, 'pages']);

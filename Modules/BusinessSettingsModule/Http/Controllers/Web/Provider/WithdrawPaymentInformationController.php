@@ -93,9 +93,6 @@ class WithdrawPaymentInformationController extends Controller
         $method->is_active = $hasExisting == false || (bool)$request->is_active;
         $method->save();
 
-        //update setup guideline data
-        updateSetupGuidelineTutorialsOptions(auth()->user()->id,'payment_information', 'web');
-
         Toastr::success(translate(DEFAULT_STORE_200['message']));
         return back();
     }

@@ -14,7 +14,7 @@
             <div class="row">
                 <div class="col-12">
                     <div class="page-title-wrap mb-3">
-                        <h2 class="page-title">{{translate('send_notification')}}</h2>
+                        <h2 class="page-title">{{translate('push_notification')}}</h2>
                     </div>
                     <div class="bg-warning bg-opacity-10 fs-12 p-12 text-dark rounded mb-3">
                         <div class="d-flex align-items-center gap-2">
@@ -36,9 +36,10 @@
                         <div class="card mb-30">
                             <div class="card-body p-20">
                             <div class="mb-20">
+                                <h3 class="mb-1">{{ translate('Push Notification') }}</h3>
                                 <p class="fz-12 mb-20">{{ translate('From here admin can send notification to the users') }}</p>
                             </div>
-                                <form action="{{route('admin.push-notification.store')}}" method="POST" enctype="multipart/form-data" id="send-notification-form">
+                                <form action="{{route('admin.push-notification.store')}}" method="POST" enctype="multipart/form-data">
                                     @csrf
                                     <div class="row g-sm-4 g-3">
                                         <div class="col-lg-8">
@@ -142,7 +143,7 @@
                                             <div class="d-flex justify-content-end gap-20">
                                                 <button class="btn btn--secondary rounded" type="reset">{{translate('reset')}}</button>
                                                 @can('push_notification_add')
-                                                    <button class="btn btn--primary rounded demo_check send-notification-btn" type="submit">{{translate('Save & Send')}}</button>
+                                                    <button class="btn btn--primary rounded demo_check" type="submit">{{translate('Save & Send')}}</button>
                                                 @endcan
                                             </div>
                                         </div>
@@ -730,21 +731,6 @@
                 selectedNotificationItem.prop('checked', !notificationInitialState);
             }
         }
-
-        $(document).ready(function () {
-            $('#send-notification-form').on('submit', function () {
-                const $btn = $('.send-notification-btn');
-
-                if ($btn.prop('disabled')) {
-                    return false;
-                }
-
-                $btn.prop('disabled', true).html(`
-                <span class="spinner-border spinner-border-sm me-2"></span>
-                {{ translate("Sending...") }}
-                `);
-            });
-        });
 
 
     </script>

@@ -82,13 +82,9 @@
                         </div>
                     </div>
                     <div class="col-lg-3 col-sm-6">
-                        <div class="card recent-transactions h-100 w-100">
+                        <div class="card recent-transactions h-100">
                             <div class="card-body">
-                                <div class="d-flex justify-content-between gap-10">
-                                    <h4 class="mb-3">{{translate('recent_transactions')}}</h4>
-                                    <a href="{{route('admin.transaction.list', ['trx_type'=>'all'])}}"
-                                       class="btn-link">{{translate('view_all')}}</a>
-                                </div>
+                                <h4 class="mb-3">{{translate('recent_transactions')}}</h4>
                                 @if(isset($data[2]['recent_transactions']) && count($data[2]['recent_transactions']) > 0)
                                     <div class="d-flex align-items-center gap-3 mb-4">
                                         <img src="{{asset('public/assets/admin-module')}}/img/icons/arrow-up.png"
@@ -96,54 +92,24 @@
                                         <p class="opacity-75">{{$data[2]['this_month_trx_count']}} {{translate('transactions_this_month')}}</p>
                                     </div>
                                 @endif
-                                <div class="events w-100">
+                                <div class="events">
                                     @foreach($data[2]['recent_transactions'] as $transaction)
                                         <div class="event">
                                             <div class="knob"></div>
-                                            <div class="d-flex align-items-center gap-1 justify-content-between">
-                                                <div class="title">
-                                                    @if($transaction->debit>0)
-                                                        <h5>{{with_currency_symbol($transaction->debit)}} {{translate('debited')}}</h5>
-                                                    @else
-                                                        <h5>{{with_currency_symbol($transaction->credit)}} {{translate('credited')}}</h5>
-                                                    @endif
-
-                                                    <p class="m-0 fs-13 d-flex align-items-center gap-1">
-                                                       <span class="material-symbols-outlined fs-5 cursor-pointer" data-bs-toggle="tooltip" data-bs-placement="top" title="Provider">
-                                                         person
-                                                       </span>
-                                                        @if($transaction?->from_user?->provider)
-                                                            {{Str::limit($transaction->from_user->provider->company_name, 30)}}
-                                                        @else
-                                                            {{Str::limit($transaction?->from_user?->first_name.' '.$transaction?->from_user?->last_name, 30)}}
-                                                        @endif
-                                                    </p>
-                                                </div>
-                                                <div class="description">
-                                                    <p class="fs-12">{{date('d M H:i a',strtotime($transaction->created_at))}}</p>
-                                                </div>
+                                            <div class="title">
+                                                @if($transaction->debit>0)
+                                                    <h5>{{with_currency_symbol($transaction->debit)}} {{translate('debited')}}</h5>
+                                                @else
+                                                    <h5>{{with_currency_symbol($transaction->credit)}} {{translate('credited')}}</h5>
+                                                @endif
+                                            </div>
+                                            <div class="description">
+                                                <p>{{date('d M H:i a',strtotime($transaction->created_at))}}</p>
                                             </div>
                                         </div>
                                     @endforeach
-                                        <!-- <div class="d-flex flex-column justify-content-center align-items-center height-80p w-100">
-                                            <div class="recent-transaction-no-data text-center">
-                                                <img src="{{ asset('public/assets/admin-module/img/icons/no-transaction.svg') }}" alt=""> <br>
-                                                <p class="fs-16 text-dark-icon">{{ translate('No Recent Transactions') }}</p>
-                                            </div>
-                                        </div> -->
                                     <div class="line"></div>
                                 </div>
-
-                                @if(count($data[2]['recent_transactions']) < 1)
-
-                                <div class="d-flex flex-column justify-content-center align-items-center h-100 w-100">
-                                    <div class="recent-transaction-no-data text-center">
-                                        <img src="{{ asset('public/assets/admin-module/img/icons/no-transaction.svg') }}" alt=""> <br>
-                                        <p class="fs-16 text-dark-icon">{{ translate('No Recent Transactions') }}</p>
-                                    </div>
-                                </div>
-                                @endif
-
                             </div>
                         </div>
                     </div>

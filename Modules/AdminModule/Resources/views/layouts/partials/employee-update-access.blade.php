@@ -1,5 +1,5 @@
 
-
+<hr class="mb-30">
 @foreach(SYSTEM_MODULES as $module)
     @php
         $buttonPermission = ['can_add', 'can_update', 'can_delete', 'can_export', 'can_manage_status','can_approve_or_deny','can_assign_serviceman','can_give_feedback','can_take_backup'];
@@ -49,36 +49,34 @@
                                         @endphp
                                         @if ($showManageAccess)
                                             <h4 class="mb-3 mt-4">{{ translate('Manage Access') }}</h4>
-                                            <div class="card border shadow-none">
-                                                <div class="table-responsive">
-                                                    <table class="table align-middle p-0 m-0 border-0 table-body-border">
-                                                        <thead class="text-nowrap">
-                                                        <tr>
-                                                            @foreach($buttonPermission as $permission)
-                                                                @php
-                                                                    $permissionWords = explode('_', $permission);
-                                                                    $lastWord = end($permissionWords);
-                                                                @endphp
-                                                                <th class="text-center">{{ translate(ucfirst(str_replace('_', ' ', $lastWord))) }}</th>
-                                                            @endforeach
-                                                        </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                        <tr>
-                                                            @foreach($buttonPermission as $permission)
-                                                                <td>
-                                                                    <label class="switcher mx-auto">
-                                                                        <input class="switcher_input" name="modules[{{$module['key']}}][{{ $permission }}]" type="checkbox" @if($matchedRoleSection->$permission) checked @endif> {{--@if($matchedRoleSection->$permission) checked @endif--}}
-                                                                        <span class="switcher_control"></span>
-                                                                    </label>
-                                                                </td>
-                                                            @endforeach
-                                                        </tr>
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                                @php $tableRendered = true; @endphp
+                                            <div class="table-responsive">
+                                                <table class="table align-middle border-bottom">
+                                                    <thead class="text-nowrap">
+                                                    <tr>
+                                                        @foreach($buttonPermission as $permission)
+                                                            @php
+                                                                $permissionWords = explode('_', $permission);
+                                                                $lastWord = end($permissionWords);
+                                                            @endphp
+                                                            <th class="text-center">{{ translate(ucfirst(str_replace('_', ' ', $lastWord))) }}</th>
+                                                        @endforeach
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    <tr>
+                                                        @foreach($buttonPermission as $permission)
+                                                            <td>
+                                                                <label class="switcher mx-auto">
+                                                                    <input class="switcher_input" name="modules[{{$module['key']}}][{{ $permission }}]" type="checkbox" @if($matchedRoleSection->$permission) checked @endif> {{--@if($matchedRoleSection->$permission) checked @endif--}}
+                                                                    <span class="switcher_control"></span>
+                                                                </label>
+                                                            </td>
+                                                        @endforeach
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
                                             </div>
+                                            @php $tableRendered = true; @endphp
                                         @endif
                                     </div>
                                 @endif
@@ -94,34 +92,32 @@
                 <input type="hidden" name="modules[{{ $module['key'] }}][access_role][{{ $module['key'] }}]">
                 <hr>
                 <h4 class="mb-3 mt-4">{{ translate('Manage Access') }}</h4>
-                <div class="card border shadow-none">
-                    <div class="table-responsive">
-                        <table class="table align-middle p-0 m-0 border-0 table-body-border">
-                            <thead class="text-nowrap">
-                            <tr>
-                                @foreach($buttonPermission as $permission)
-                                        @php
-                                            $permissionWords = explode('_', $permission);
-                                            $lastWord = end($permissionWords);
-                                        @endphp
-                                        <th class="text-center">{{ translate(ucfirst(str_replace('_', ' ', $lastWord))) }}</th>
-                                @endforeach
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr>
-                                @foreach($buttonPermission as $permission)
-                                    <td>
-                                        <label class="switcher mx-auto">
-                                            <input class="switcher_input" name="modules[{{$module['key']}}][{{ $permission }}]" type="checkbox" @if($matchedRoleBtn->$permission) checked @endif>
-                                            <span class="switcher_control"></span>
-                                        </label>
-                                    </td>
-                                @endforeach
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
+                <div class="table-responsive">
+                    <table class="table align-middle border-bottom">
+                        <thead class="text-nowrap">
+                        <tr>
+                            @foreach($buttonPermission as $permission)
+                                    @php
+                                        $permissionWords = explode('_', $permission);
+                                        $lastWord = end($permissionWords);
+                                    @endphp
+                                    <th class="text-center">{{ translate(ucfirst(str_replace('_', ' ', $lastWord))) }}</th>
+                            @endforeach
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            @foreach($buttonPermission as $permission)
+                                <td>
+                                    <label class="switcher mx-auto">
+                                        <input class="switcher_input" name="modules[{{$module['key']}}][{{ $permission }}]" type="checkbox" @if($matchedRoleBtn->$permission) checked @endif>
+                                        <span class="switcher_control"></span>
+                                    </label>
+                                </td>
+                            @endforeach
+                        </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>

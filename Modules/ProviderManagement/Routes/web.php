@@ -69,8 +69,6 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Web\Admin',
 
 
 Route::group(['prefix' => 'provider', 'as' => 'provider.', 'namespace' => 'Web\Provider', 'middleware' => ['provider']], function () {
-    Route::get('setup-guide/status', [ProviderProviderController::class, 'refreshSetupGuideUI'])->name('setup-guide.status');
-
     Route::post('search-routing', [ProviderProviderController::class, 'searchRouting'])->name('search.routing');
     Route::get('lang/{locale}', [LanguageController::class, 'lang'])->name('lang');
     Route::get('get-updated-data', [ProviderProviderController::class, 'getUpdatedData'])->name('get_updated_data');

@@ -838,59 +838,6 @@ We may release future updates so it will overwrite this file. it's better and sa
         });
     });
 
-
-    //------- Custom Slider for card or tabs --------
-    document.addEventListener("DOMContentLoaded", () => {
-        const container = document.querySelector('.tabs-inner');
-        if (!container) return;
-
-        const btnPrevWrap = document.querySelector('.button-prev');
-        const btnNextWrap = document.querySelector('.button-next');
-        const item = document.querySelector('.tabs-slide_items');
-
-        document.querySelectorAll('.tabs-slide_items').forEach(el => {
-            el.style.flex = '0 0 auto';
-        });
-
-        function updateArrows() {
-            const hasOverflow = container.scrollWidth > container.clientWidth;
-
-            if (!hasOverflow) {
-            btnPrevWrap.style.display = 'none';
-            btnNextWrap.style.display = 'none';
-            return;
-            }
-
-            const atStart = container.scrollLeft <= 0;
-            const atEnd = container.scrollLeft + container.clientWidth >= container.scrollWidth - 1;
-
-            btnPrevWrap.style.display = atStart ? 'none' : 'flex';
-            btnNextWrap.style.display = atEnd ? 'none' : 'flex';
-        }
-
-        document.querySelector('.btn-click-prev')?.addEventListener('click', () => {
-            const itemWidth = item?.offsetWidth || 0;
-            container.scrollBy({ left: -itemWidth, behavior: 'smooth' });
-        });
-
-        document.querySelector('.btn-click-next')?.addEventListener('click', () => {
-            const itemWidth = item?.offsetWidth || 0;
-            container.scrollBy({ left: itemWidth, behavior: 'smooth' });
-        });
-
-        container.addEventListener('scroll', updateArrows);
-
-        ['load', 'resize'].forEach(e =>
-            window.addEventListener(e, updateArrows)
-        );
-
-        new MutationObserver(updateArrows).observe(container, { childList: true, subtree: true });
-        new ResizeObserver(updateArrows).observe(container);
-
-        updateArrows();
-    });
-
-
 })(jQuery);
 
 

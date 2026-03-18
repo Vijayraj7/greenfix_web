@@ -38,8 +38,6 @@
     <link rel="stylesheet" href="{{asset('public/assets/admin-module')}}/css/style.css"/>
     <link rel="stylesheet" href="{{asset('public/assets/admin-module')}}/css/dev.css"/>
     <link rel="stylesheet" href="{{asset('public/assets/common')}}/css/common.css"/>
-    <link rel="stylesheet" href="{{asset('public/assets/provider-module')}}/css/view-guideline.css"/>
-
 
     @stack('css_or_js')
 </head>

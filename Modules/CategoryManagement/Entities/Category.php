@@ -14,7 +14,6 @@ use Modules\PromotionManagement\Entities\DiscountType;
 use Modules\ServiceManagement\Entities\Service;
 use Modules\ZoneManagement\Entities\Zone;
 use App\Traits\HasUuid;
-use Illuminate\Support\Str;
 
 class Category extends Model
 {
@@ -22,14 +21,13 @@ class Category extends Model
     use HasUuid;
 
     protected $casts = [
-        'position'  => 'integer',
+        'position' => 'integer',
         'is_active' => 'integer',
-        'slug'      => 'string',
     ];
 
     protected $appends = ['image_full_path'];
 
-    protected $fillable = ['slug'];
+    protected $fillable = [];
 
     public function scopeOfStatus($query, $status)
     {
@@ -161,23 +159,6 @@ class Category extends Model
         return getSingleImageFullPath(imagePath: $imagePath, s3Storage: $s3Storage, defaultPath: $defaultPath);
     }
 
-    protected static function generateUniqueSlug($name, $ignoreId = null)
-    {
-        $slug = Str::slug($name);
-        $original = $slug;
-        $count = 1;
-
-        while (
-        static::where('slug', $slug)
-            ->when($ignoreId, fn ($q) => $q->where('id', '!=', $ignoreId))
-            ->exists()
-        ) {
-            $slug = $original . '-' . $count++;
-        }
-
-        return $slug;
-    }
-
     protected static function booted()
     {
         static::addGlobalScope('zone_wise_data', function (Builder $builder) {
@@ -198,21 +179,6 @@ class Category extends Model
             $storageType = getDisk();
             if($model->isDirty('image') && $storageType != 'public'){
                 saveSingleImageDataToStorage(model: $model, modelColumn : 'image', storageType : $storageType);
-            }
-        });
-
-        static::creating(function ($category) {
-            if (empty($category->slug)) {
-                $category->slug = static::generateUniqueSlug($category->name);
-            }
-        });
-
-        static::updating(function ($category) {
-            $originalName = $category->getOriginal('name');
-            $currentName = $category->name;
-
-            if ($originalName !== $currentName || empty($category->slug)) {
-                $category->slug = static::generateUniqueSlug($category->name, $category->id);
             }
         });
     }

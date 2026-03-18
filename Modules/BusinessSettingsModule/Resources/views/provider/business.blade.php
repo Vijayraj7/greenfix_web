@@ -48,7 +48,6 @@
                     </div>
 
                     @if($webPage=='businessinfos')
-
                     <div class="tab-content">
                         <div class="tab-pane fade {{$webPage=='businessinfos'?'active show':''}}">
 

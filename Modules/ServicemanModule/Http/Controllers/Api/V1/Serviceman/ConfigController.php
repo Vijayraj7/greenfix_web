@@ -11,8 +11,10 @@ use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Validator;
 use Modules\BusinessSettingsModule\Entities\BusinessPageSetting;
+use Modules\BusinessSettingsModule\Entities\LoginSetup;
 use Modules\PaymentModule\Entities\Setting;
 use Modules\ZoneManagement\Entities\Zone;
+use Stevebauman\Location\Facades\Location;
 
 class ConfigController extends Controller
 {
@@ -34,6 +36,8 @@ class ConfigController extends Controller
      */
     public function configuration(Request $request): JsonResponse
     {
+        $location = Location::get($request->ip());
+
         $advancedBooking =  [
             'advanced_booking_restriction_value' => (int) business_config('advanced_booking_restriction_value', 'booking_setup')?->live_values,
             'advanced_booking_restriction_type' => business_config('advanced_booking_restriction_type', 'booking_setup')?->live_values,
@@ -92,8 +96,8 @@ class ConfigController extends Controller
             'refund_policy' => (business_config('refund_policy', 'pages_setup'))->is_active ? route('refund-policy') : "",
             'cancellation_policy' => (business_config('cancellation_policy', 'pages_setup'))->is_active ? route('cancellation-policy') : "",
             'default_location' => ['default' => [
-                'lat' => (business_config('address_latitude', 'business_information'))->live_values ?? 23.811842872190,
-                'lon' => (business_config('address_longitude', 'business_information'))->live_values ?? 90.66504678008192
+                'lat' => $location->latitude ?? null,
+                'lon' => $location->longitude ?? null
             ]],
             'sms_verification' => (business_config('sms_verification', 'service_setup'))->live_values ?? null,
             'pagination_limit' => (int)pagination_limit(),

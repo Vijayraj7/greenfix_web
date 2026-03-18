@@ -2057,11 +2057,6 @@ table.dataTable {
     box-shadow: 0 0 0 1px var(--input-border-color-active);
 }
 
-.map__zone-setup #pac-input {
-    left: auto !important;
-    right: 57px !important;
-}
-
 #pac-input,
 .table-variation .theme-input-style,
 .table-variation .form-control {
@@ -6831,9 +6826,6 @@ g[filter="url(#filter6_d_4021_1338)"] {
 .price-box-wrap {
     display: flex;
     gap: 1rem;
-    .tabs-slide_items{
-        width: 245px;
-    }
 }
 
 .price-box-wrap > .price-box {
@@ -8763,94 +8755,3 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 }
 
 
-.table-body-border td{
-    border: 1px solid var(--border-color) !important;
-}
-.bg-absolute-white{
-    background-color: var(--absolute-white) !important;
-}
-.hover-dark-absolute{
-    &:hover{
-        color: #000 !important;
-    }
-}
-
-
-/*coupon-slide_items*/
-.tabs-inner {
-  overflow-x: auto;
-  scroll-behavior: smooth;
-}
-.tabs-inner::-webkit-scrollbar {
-  display: none;
-}
-.tabs-slide-wrap .button-prev,
-.tabs-slide-wrap .button-next {
-    display: none;
-    align-items: center;
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-}
-.tabs-slide-wrap .btn-click-prev,
-.tabs-slide-wrap .btn-click-next{
-    width: 34px;
-    height: 34px;
-    min-width: 34px;
-    line-height: 34px;
-    text-align: center;
-    background-color: var(--bg-color4) !important;
-    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.08);
-    border-radius: 45px;
-    color: var(--bs-body-color);
-    z-index: 1;
-    border: 1px solid var(--border-color) !important;
-
-    &:focus,
-    &:active,
-    &:hover{
-        background-color: var(--bs-primary) !important;
-        color: var(--bs-white) !important;
-    }
-}
-
-.tabs-slide-wrap .button-prev{
-    top: 214px;
-    left: -18px;
-    width: 53px;
-    height: 113px;
-    // background: linear-gradient(-90deg, rgba(255, 255, 255, 0.00) 0%, #FFF 50%);
-    border-radius: 10px 0 0 10px;
-    z-index: 1;
-    @media screen and (max-width: 991px) {
-        .button-prev{
-            left: -15px;
-        }
-    }
-}
-.tabs-slide-wrap .button-next{
-   top: 214px;
-    right: -18px;
-    width: 53px;
-    height: 113px;
-    // background: linear-gradient(90deg, rgba(255, 255, 255, 0.00) 0%, #FFF 50%);
-    border-radius: 0 10px 10px 0;
-    z-index: 1;
-    @media screen and (max-width: 991px) {
-        .button-next{
-            right: -15px;
-        }
-    }
-}
-
-
-.plan-list__scrollbar{
-    max-height: 180px;
-    overflow-y: auto;
-}
-.plan-list__scrollbar::-webkit-scrollbar {
-    display: none;
-}
-.plan-list__scrollbar {
-    scrollbar-width: none;
-}

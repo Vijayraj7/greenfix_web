@@ -47,7 +47,7 @@ Route::group(['prefix' => 'provider', 'as' => 'provider.', 'namespace' => 'Web\P
         Route::get('request-list', [ServiceController::class, 'requestList'])->name('request-list')->middleware('subscription:service_request');
         Route::get('make-request', [ServiceController::class, 'makeRequest'])->name('make-request');
         Route::post('make-request', [ServiceController::class, 'storeRequest']);
-        Route::put('update-subscription', [ServiceController::class, 'updateSubscription'])->name('update-subscription');
+        Route::post('update-subscription', [ServiceController::class, 'updateSubscription'])->name('update-subscription');
         Route::any('detail/{id}', [ServiceController::class, 'show'])->name('detail');
         Route::post('review-reply', [ServiceController::class, 'reviewReply'])->name('review.reply');
         Route::any('reviews/download', [ServiceController::class, 'reviewsDownload'])->name('reviews.download');

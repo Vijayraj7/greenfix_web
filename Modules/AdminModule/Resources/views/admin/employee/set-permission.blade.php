@@ -238,8 +238,8 @@
                                     </div>
                                     <section class="step2 active">
                                         <div class="d-flex flex-column gap-1 mb-20">
-                                            <h3>{{translate('Set_Permission')}}</h3>
-                                            <p class="fs-12">{{translate('Modify what individuals on this role can do')}}</p>
+                                            <h4>{{translate('Set_Permission')}}</h4>
+                                            <p>{{translate('Modify what individuals on this role can do')}}</p>
                                         </div>
                                         <div class="role-access-permission">
                                         </div>

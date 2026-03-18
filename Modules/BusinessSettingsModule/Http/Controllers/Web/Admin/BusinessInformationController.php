@@ -312,11 +312,6 @@ class BusinessInformationController extends Controller
             ]);
         }
 
-        if ($request->input('web_page') === 'business_information') {
-            //update setup guideline data
-            updateSetupGuidelineTutorialsOptions(auth()->user()->id,'business_information', 'web');
-        }
-
         session()->forget('pagination_limit');
 
         return response()->json(response_formatter(DEFAULT_UPDATE_200), 200);
@@ -685,6 +680,7 @@ class BusinessInformationController extends Controller
 
     public function businessModelSetup(Request $request): JsonResponse|RedirectResponse
     {
+
         $this->authorize('business_update');
 
         collect([
@@ -708,9 +704,6 @@ class BusinessInformationController extends Controller
                 'is_active' => 1,
             ]);
         }
-
-        //update setup guideline data
-        updateSetupGuidelineTutorialsOptions(auth()->user()->id,'business_plan', 'web');
 
         Toastr::success(translate(DEFAULT_UPDATE_200['message']));
         return back();

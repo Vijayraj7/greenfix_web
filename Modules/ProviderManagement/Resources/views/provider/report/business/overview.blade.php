@@ -108,63 +108,41 @@
                         @endforeach
                         <div class="col-xl-3">
                             <div class="d-flex flex-wrap gap-2">
-                                <div class="card flex-row justify-content-center gap-4 p-30 flex-wrap flex-grow-1">
+                                <div class="card flex-row gap-4 p-30 flex-wrap flex-grow-1">
                                     <img width="35" class="avatar" src="{{asset('public/assets/admin-module')}}/img/icons/net_profit.png" alt="">
-                                    <div class="text-start">
+                                    <div class="text-center">
                                         <h2 class="fz-26">{{with_currency_symbol(array_sum($chartData['earnings'])-array_sum($chartData['expenses']))}}</h2>
                                         <span class="fz-12">{{translate('Net_Profit')}}</span>
                                     </div>
                                 </div>
 
-                                <div class="card py-4 px-3 flex-grow-1">
-                                    <div class="d-flex justify-content-center gap-4 flex-wrap mb-20 py-1">
+                                <div class="card p-30 flex-grow-1">
+                                    <div class="d-flex gap-4 flex-wrap">
                                         <img width="35" class="avatar" src="{{asset('public/assets/admin-module')}}/img/icons/total_expense.png" alt="">
-                                        <div class="text-start">
+                                        <div class="text-center">
                                             <h2 class="fz-26">{{with_currency_symbol(array_sum($chartData['expenses']))}}</h2>
                                             <span class="fz-12">{{translate('Total_Expense')}}</span>
                                         </div>
                                     </div>
-                                    <div class="tabs-slide-wrap overview__expense-wrap position-relative">
-                                        <div class="tabs-inner d-flex gap-2 flex-nowrap text-nowrap">
-                                            <div class="overview_expenses tabs-slide_items d-flex align-items-center jsutif-content-center">
-                                                <div class="d-flex flex-column align-items-center gap-2 fz-12 bg-light rounded p-10px w-100">
-                                                    <span class="fw-bold text-danger">{{with_currency_symbol($totalPromotionalCost['campaign'])}}</span>
-                                                    <span class="opacity-50">{{translate('Campaign')}}</span>
-                                                </div>
-                                            </div>
-                                            <div class="overview_expenses tabs-slide_items d-flex align-items-center jsutif-content-center">
-                                                <div class="d-flex flex-column align-items-center gap-2 fz-12 bg-light rounded p-10px w-100">
-                                                    <span class="c1 fw-bold">{{with_currency_symbol($totalPromotionalCost['discount'])}}</span>
-                                                    <span class="opacity-50">{{translate('Normal_Discount')}}</span>
-                                                </div>
-                                            </div>
-                                            <div class="overview_expenses tabs-slide_items d-flex align-items-center jsutif-content-center">
-                                                <div class="d-flex flex-column align-items-center gap-2 fz-12 bg-light rounded p-10px w-100">
-                                                    <span class="text-success fw-bold">{{with_currency_symbol($totalPromotionalCost['coupon'])}}</span>
-                                                    <span class="opacity-50">{{translate('Coupon_Discount')}}</span>
-                                                </div>
-                                            </div>
+                                    <div class="d-flex flex-wrap justify-content-between gap-2 mt-30">
+                                        <div class="d-flex flex-column align-items-center gap-2 fz-12">
+                                            <span class="c1 fw-semibold">{{with_currency_symbol($totalPromotionalCost['campaign'])}}</span>
+                                            <span class="opacity-50">{{translate('Campaign')}}</span>
                                         </div>
-                                        <div class="arrow-area">
-                                            <div class="button-prev align-items-center">
-                                                <button type="button"
-                                                    class="btn btn-click-prev mr-auto border-0 btn-primary rounded-circle p-2 d-center">                                            
-                                                    <span class="material-symbols-outlined fs-5 lh-1 m-0">chevron_left</span>                                                                                        
-                                                </button>
-                                            </div>
-                                            <div class="button-next align-items-center">
-                                                <button type="button"
-                                                    class="btn btn-click-next ms-auto border-0 btn-primary rounded-circle p-2 d-center">
-                                                    <span class="material-symbols-outlined fs-5 lh-1 m-0">chevron_right</span> 
-                                                </button>
-                                            </div>
+                                        <div class="d-flex flex-column align-items-center gap-2 fz-12">
+                                            <span class="c1 fw-semibold">{{with_currency_symbol($totalPromotionalCost['discount'])}}</span>
+                                            <span class="opacity-50">{{translate('Normal_Discount')}}</span>
+                                        </div>
+                                        <div class="d-flex flex-column align-items-center gap-2 fz-12">
+                                            <span class="c1 fw-semibold">{{with_currency_symbol($totalPromotionalCost['coupon'])}}</span>
+                                            <span class="opacity-50">{{translate('Coupon_Discount')}}</span>
                                         </div>
                                     </div>
                                 </div>
 
-                                <div class="card flex-row justify-content-center gap-4 p-30 flex-wrap flex-grow-1">
+                                <div class="card flex-row gap-4 p-30 flex-wrap flex-grow-1">
                                     <img width="35" class="avatar" src="{{asset('public/assets/admin-module')}}/img/icons/commission_earning.png" alt="">
-                                    <div class="text-start">
+                                    <div class="text-center">
                                         <h2 class="fz-26">{{with_currency_symbol($total_tax)}}</h2>
                                         <span class="fz-12">{{translate('Total_Tax_Collected')}}</span>
                                     </div>

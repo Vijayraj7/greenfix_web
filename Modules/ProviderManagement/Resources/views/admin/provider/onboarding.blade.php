@@ -36,15 +36,21 @@
 
             <div class="card">
                 <div class="card-body">
-                    <div class="data-table-top align-items-center d-flex flex-wrap gap-10 justify-content-between">
-                        <h4 class="m-0">{{ translate('Onboarding Request List') }}</h4>
-                         <form action="{{url()->current()}}" class="d-flex align-items-center gap-0 border rounded" method="POST">
+                    <div class="data-table-top d-flex flex-wrap gap-10 justify-content-between">
+                        <form action="{{url()->current()}}"
+                              class="search-form search-form_style-two"
+                              method="POST">
                             @csrf
-                            <input type="search" class="theme-input-style border-0 rounded block-size-36" name="search" value="{{$search??''}}" placeholder="{{translate('search_here')}}">
-                            <button type="submit" class="bg-light border-0 px-2 block-size-36 rounded-end d-flex align-items-center justify-content-center">
-                                <span class="material-symbols-outlined fz-20 opacity-75">
-                                    search
-                                </span>
+                            <div class="input-group search-form__input_group">
+                                            <span class="search-form__icon">
+                                                <span class="material-icons">search</span>
+                                            </span>
+                                <input type="search" class="theme-input-style search-form__input"
+                                       value="{{$search??''}}" name="search"
+                                       placeholder="{{translate('search_here')}}">
+                            </div>
+                            <button type="submit" class="btn btn--primary">
+                                {{translate('search')}}
                             </button>
                         </form>
                     </div>
@@ -63,7 +69,7 @@
                             </tr>
                             </thead>
                             <tbody>
-                            @forelse($providers as $key=>$provider)
+                            @foreach($providers as $key=>$provider)
                                 <tr>
                                     <td>{{$providers->firstitem()+$key}}</td>
                                     <td>
@@ -118,18 +124,7 @@
                                         </td>
                                     @endcan
                                 </tr>
-                            @empty
-                                <tr>
-                                    <td colspan="5">
-                                        <div class="review-empty-state py-5">
-                                            <div class="d-flex flex-column align-items-center justify-content-center py-5 gap-2 my-5">
-                                                <img src="{{asset('public/assets/admin-module/img/onbording-request-empty.svg')}}" alt="No data">
-                                                <h5 class="m-0 text-muted opacity-50">{{translate('No Request Found')}}</h5>
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-                            @endforelse
+                            @endforeach
                             </tbody>
                         </table>
                     </div>

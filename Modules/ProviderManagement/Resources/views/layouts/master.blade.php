@@ -36,7 +36,6 @@
 
     <link rel="stylesheet" href="{{asset('public/assets/provider-module')}}/css/style.css"/>
     <link rel="stylesheet" href="{{asset('public/assets/provider-module')}}/css/dev.css"/>
-    <link rel="stylesheet" href="{{asset('public/assets/provider-module')}}/css/view-guideline.css"/>    
     <link rel="stylesheet" href="{{asset('public/assets/common')}}/css/common.css"/>
     @stack('css_or_js')
     <style>
@@ -68,8 +67,6 @@
 
 <main class="main-area">
     @yield('content')
-
-    @include('providermanagement::layouts.partials._setup_guildeline')
 
     @include('providermanagement::layouts.partials._footer')
 

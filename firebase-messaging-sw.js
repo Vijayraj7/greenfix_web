@@ -1,13 +1,13 @@
 importScripts('https://www.gstatic.com/firebasejs/8.3.2/firebase-app.js');
 importScripts('https://www.gstatic.com/firebasejs/8.3.2/firebase-messaging.js');
 firebase.initializeApp({
-    apiKey: "AIzaSyATwpBSYz69b5Y9ryQLELOJIHZSpJcXf7I",
-    authDomain: "http://demancms.firebaseapp.com/",
-    projectId: "demancms",
-    storageBucket: "http://demancms.appspot.com/",
-    messagingSenderId: "889759666168",
-    appId: "1:889759666168:web:ab661cb341d3e47384d00d",
-    measurementId: ""
+    apiKey: "AIzaSyCmUIxnIVDTK_GM5nUVLS4TS18yeSCy7Jc",
+    authDomain: "green-fix.firebaseapp.com",
+    projectId: "green-fix",
+    storageBucket: "green-fix.firebasestorage.app",
+    messagingSenderId: "304271939104",
+    appId: "1:304271939104:android:db0e2b544074e0d7e24e45",
+    measurementId: "G-JKVT00YV73"
 });
 const messaging = firebase.messaging();
 messaging.setBackgroundMessageHandler(function (payload) {

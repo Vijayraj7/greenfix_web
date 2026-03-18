@@ -158,13 +158,11 @@ class ServicemanController extends Controller
         }
 
         $serviceman = $this->serviceman::with(['user'])->find($id);
+        $serviceman->bookings_count = $bookingCount;
 
         if (!isset($serviceman)) {
             return response()->json(response_formatter(DEFAULT_204), 204);
         }
-
-        $serviceman->bookings_count = $bookingCount;
-
         return response()->json(response_formatter(DEFAULT_200, $serviceman), 200);
     }
 

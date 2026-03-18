@@ -145,22 +145,22 @@
     <div class="modal-dialog modal-dialog-centered modal-xl">
         <div class="modal-content">
             <div class="modal-body p-lg-5">
-                <button type="button" class="btn-close fs-10" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 
                 <div class="text-center mb-30">
                     <h3 class="mb-2 h5">{{translate('Change/Renew Subscription Plan')}}</h3>
-                    <p class="text-muted fs-14">{{translate('Renew or shift your plan to get better experience!')}}</p>
+                    <p class="text-muted">{{translate('Renew or shift your plan to get better experience!')}}</p>
                 </div>
 
                 <div class="overflow-x-auto price-box-wrap">
                     @if($packageSubscriber && $commissionStatus)
                         <div class="price-box d-flex flex-column rounded-3 border">
                             <div class="price-box__top px-2 py-4 text-center mb-3">
-                                <h5 class="line-clamp-1 text-muted">{{translate('Commission Base')}}</h5>
+                                <h5>{{translate('Commission Base')}}</h5>
                             </div>
 
                             <div class="text-center min-h-62 d-flex flex-column justify-content-center">
-                                <strong class="h3 text-dark">{{$commission}}%</strong>
+                                <strong class="h3">{{$commission}}%</strong>
                             </div>
 
                             <div class="px-2">
@@ -168,7 +168,7 @@
                             </div>
 
                             <div class="p-3 flex-grow-1 d-flex flex-column">
-                                <div class="text-center mb-30 fs-12 text--grey">
+                                <div class="text-center mb-30 fs-12">
                                     {{translate('Provider will pay ')}}{{$commission}}% {{translate('commission to admin from each booking. You will get access of all the features and options in provider panel, app and interaction with user.')}}
                                 </div>
 
@@ -186,12 +186,12 @@
 
                         <div class="price-box d-flex flex-column {{ $isMatch ? 'active' : '' }} rounded-4 overflow-hidden border">
                             <div class="price-box__top px-2 py-4 text-center mb-3">
-                                <h5 class="line-clamp-1 text-muted">{{ $package->name }}</h5>
+                                <h5 class="line-clamp-1">{{ $package->name }}</h5>
                             </div>
 
                             <div class="text-center min-h-62 d-flex flex-column justify-content-center">
-                                <strong class="h3 fw-bold text-dark">{{with_currency_symbol($package->price)}}</strong>
-                                <div class="days fs-14 text-muted">{{ $package->duration }} {{translate('Days')}}</div>
+                                <strong class="h3">{{with_currency_symbol($package->price)}}</strong>
+                                <div class="days">{{ $package->duration }} {{translate('Days')}}</div>
                             </div>
 
                             <div class="px-2">
@@ -199,9 +199,9 @@
                             </div>
 
                             <div class="p-3 flex-grow-1 d-flex flex-column">
-                                <ul class="d-flex flex-column align-items-center gap-2 p-0 fs-12 mb-30 plan-list__scrollbar">
+                                <ul class="d-flex flex-column align-items-center gap-2 p-0 fs-12 mb-30">
                                     @foreach($package->feature_list as $feature)
-                                        <li class=""> <div class="line-limit-1">{{ $feature }}</div></li>
+                                        <li>{{ $feature }}</li>
                                     @endforeach
                                 </ul>
 

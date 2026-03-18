@@ -130,6 +130,7 @@
             </div>
         </div>
     @endforeach
+
 @endsection
 
 @push('script')
@@ -176,7 +177,7 @@
 
                         $.ajax({
                             url: "{{route('provider.service.update-subscription')}}",
-                            method: 'PUT',
+                            method: 'POST',
                             data: {
                                 _token: $('meta[name="csrf-token"]').attr('content'),
                                 sub_category_id: subCategoryId
@@ -184,9 +185,6 @@
                             success: function (response) {
                                 if (response.response_code === 'default_200') {
                                     toastr.success('{{translate("subscription_updated_successfully")}}');
-
-                                    // refresh setup guideline UI
-                                    refreshSetupGuideUI();
                                 } else if (response.response_code === 'default_204') {
                                     toastr.warning('{{translate("this_category_is_not_available_in_your_zone")}}');
                                     button.attr('class', originalClass).text(originalText);

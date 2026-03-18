@@ -270,19 +270,8 @@ class CustomerController extends Controller
      */
     public function changeLanguage(Request $request): JsonResponse
     {
-        $authenticatedUser = null;
-        $bearerToken = $request->bearerToken();
-
-        if ($bearerToken && strtolower($bearerToken) !== 'null') {
-            try {
-                $authenticatedUser = auth('api')->user();
-            } catch (\Throwable $exception) {
-                $authenticatedUser = null;
-            }
-        }
-
-        if ($authenticatedUser){
-            $customer = $this->customer->find($authenticatedUser->id);
+        if (auth('api')->user()){
+            $customer = $this->customer->find(auth('api')->user()->id);
             $customer->current_language_key = $request->header('X-localization') ?? 'en';
             $customer->save();
             return response()->json(response_formatter(DEFAULT_200), 200);

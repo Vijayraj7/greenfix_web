@@ -7,7 +7,7 @@
     'username' => 'dreampoolecompvtltd',
     'purchase_key' => '53208772-c768-485d-84df-ba09fd4bbabe',
     'software_id' => 'NDAyMjQ3NzI=',
-    'domain' => 'admin.greenfix.in/public',
+    'domain' => 'admin.greenfix.in',
     'software_type' => 'product',
     'errors' => 
     array (
@@ -30,8 +30,8 @@
   'serviceman_app' => 
   array (
     'active' => '1',
-    'name' => 'GreenFix',
-    'identifier' => 'dreampoolecompvtltd@gmail.com',
+    'name' => NULL,
+    'identifier' => NULL,
     'username' => 'dreampoolecompvtltd',
     'purchase_key' => '6c40c9bc-0ebd-42a2-ac45-f2b3ecf87702',
     'software_id' => 'NDAyMjUxNTc=',
